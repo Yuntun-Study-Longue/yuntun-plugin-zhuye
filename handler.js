@@ -16,7 +16,7 @@ import { IntlProvider, addLocaleData } from "react-intl";
 // Our store, entrypoint, and manifest
 import createStore from "./dist/src/store";
 import App from "./dist/src/app/app";
-import manifest from "./build/asset-manifest.json";
+import manifest from "./build/asset-manifest.json";.
 
 // Some optional Redux functions related to user authentication
 import { setCurrentUser, logoutUser } from "./dist/src/modules/auth";
