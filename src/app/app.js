@@ -1,15 +1,11 @@
 // The basics
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router";
-import {
-  IntlProvider,
-  addLocaleData,
-  FormattedMessage,
-  FormattedTime
-} from "react-intl";
-import styled from "styled-components";
+import { IntlProvider, addLocaleData, FormattedMessage, FormattedTime } from "react-intl";
+import theme from "styled-theming";
+import styled, { ThemeProvider } from "styled-components";
 
 // Action creators and helpers
 import { establishCurrentUser } from "../modules/auth";
@@ -18,29 +14,21 @@ import { isServer } from "../store";
 import Header from "./header";
 import Routes from "./routes";
 
-import "./app.css";
+import { GlobalStyle } from "./global/style";
 
-import zhTranslationMessages from "./lang/message/zh";
 import enTranslationMessages from "./lang/message/en";
-
-const initialLang = "zh";
-addLocaleData(require(`react-intl/locale-data/${initialLang}`));
-
+import zhTranslationMessages from "./lang/message/zh";
 const messages = {
   en: enTranslationMessages,
   zh: zhTranslationMessages
 };
 
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`;
-
 class App extends Component {
-  state = { lang: initialLang };
+  state = { lang: "en", mode: "light" };
   componentWillMount() {
     if (!isServer) {
+      const initialLang = window.navigator.language.split("-").shift() || "en";
+      addLocaleData(require(`react-intl/locale-data/${initialLang}`));
       this.props.establishCurrentUser();
     }
   }
@@ -56,42 +44,41 @@ class App extends Component {
   }
 
   render() {
-    const { lang } = this.state;
+    const { lang, mode } = this.state;
     return (
-      <IntlProvider locale={lang} messages={messages[lang]}>
-        <div id="app">
-          <Title>我是Styled Component</Title>
-          <p>
-            <FormattedMessage id="app.home.subtitle" />
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              this.setState({ lang: "zh" });
-            }}
-          >
-            中文
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              this.setState({ lang: "en" });
-            }}
-          >
-            英文
-          </button>
-          <p>
-            The time is: <FormattedTime value={new Date().getTime()} />
-          </p>
-          <Header
-            isAuthenticated={this.props.isAuthenticated}
-            current={this.props.location.pathname}
-          />
-          <div id="content">
-            <Routes />
-          </div>
-        </div>
-      </IntlProvider>
+      <Fragment>
+        <GlobalStyle />
+        <ThemeProvider theme={{ mode }}>
+          <IntlProvider locale={lang} messages={messages[lang]}>
+            <div id="app">
+              <LangSwitchBtn>
+                <button
+                  type="button"
+                  onClick={() => {
+                    this.setState({ lang: "zh", mode: "light" });
+                  }}
+                >
+                  {" "}
+                  中文{" "}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    this.setState({ lang: "en", mode: "dark" });
+                  }}
+                >
+                  {" "}
+                  英文{" "}
+                </button>
+              </LangSwitchBtn>
+              {/* <p> The time is: <FormattedTime value={new Date().getTime()} /> </p> */}
+              <div id="content">
+                <Routes />
+              </div>
+            </div>
+          </IntlProvider>
+        </ThemeProvider>
+      </Fragment>
     );
   }
 }
@@ -100,8 +87,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({ establishCurrentUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ establishCurrentUser }, dispatch);
 
 export default withRouter(
   connect(
@@ -109,3 +95,18 @@ export default withRouter(
     mapDispatchToProps
   )(App)
 );
+
+const LangSwitchBtn = styled.div`
+  position: absolute;
+  right: 0;
+`;
+
+const titleColor = theme("mode", {
+  light: "#ff9100",
+  dark: "#000"
+});
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  color: ${titleColor};
+`;
