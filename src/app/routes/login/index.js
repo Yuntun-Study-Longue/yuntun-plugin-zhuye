@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import styled from "styled-components";
 import { createForm } from 'rc-form';
 import Page from '../../components/page';
-
 import { loginUser } from '../../../modules/auth';
+import { REACT_APP_ROOT } from "../../constants";
 
 const LoginGateWrap = styled.div`
   height: 100vh;
@@ -18,13 +18,17 @@ const LoginGate = styled.div`
   height: 240px;
   background-color: rgb(147, 149, 151);
   label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 120px; text-align: right; ::after { content: ':'} }
-  input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; }
+  input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
 `
 
 const WelcomeBanner = styled.div`
   height: 30%;
-  `
+  text-align: center;
+  color: #F5DF4D;
+  font-weight: bold;
+  padding-top: 10px;
+`
 const Button = styled.button`
   margin: 20px 0 0 0;
   color: #939597;
@@ -46,28 +50,30 @@ const RegistBtn = styled(Button)`
 const Login = props => {
   const { getFieldProps, validateFields } = props.form;
   const submit = () => validateFields((error, value) => {
-      console.log(error, value);
+    if (error) return
+    console.log(error, value);
   });
-  const regist = () => {}
   return <Page title="Login">
     <LoginGateWrap>
       <LoginGate>
-        <WelcomeBanner />
+        <WelcomeBanner>登录页面</WelcomeBanner>
         <form>
           <label htmlFor="name">请输入用户名</label>
-          <input id='name' type='text' placeholder="用户名" 
+          <input id='name' type='text' placeholder="用户名" autoComplete="off"
           {...getFieldProps('username', {
-            initialValue: ''
+            initialValue: '',
+            rules: [{required: true }]
           })} />
           <br/>
           <label htmlFor="passwd">请输入密码</label>
-          <input id='passwd' type='password' placeholder="密码"
+          <input id='passwd' type='password' placeholder="密码" autoComplete="new-password"
           {...getFieldProps('password', {
-            initialValue: ''
+            initialValue: '',
+            rules: [{ required: true, }]
           })} />
         </form>
         <SubmitBtn onClick={submit}>登录</SubmitBtn>
-        <RegistBtn onClick={regist}>注册</RegistBtn>
+        <RegistBtn onClick={() => props.history.push(`${REACT_APP_ROOT}/regist`)}>注册</RegistBtn>
       </LoginGate>
     </LoginGateWrap>
   </Page>

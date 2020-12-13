@@ -7,6 +7,12 @@ import { REACT_APP_ROOT } from "../constants";
 
 import NotFound from "./not-found";
 
+const Regist = Loadable({
+  loader: () => import(/* webpackChunkName: "regist" */ "./regist"),
+  loading: () => null,
+  modules: ["regist"]
+})
+
 const Login = Loadable({
   loader: () => import(/* webpackChunkName: "login" */ "./login"),
   loading: () => null,
@@ -22,6 +28,7 @@ const Logout = Loadable({
 export default () => (
   <Switch>
     <Route exact path={REACT_APP_ROOT} component={Login} />
+    <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/regist`} component={Regist} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/login`} component={Login} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/logout`} component={Logout} />
     <Route component={NotFound} />

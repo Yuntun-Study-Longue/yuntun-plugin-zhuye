@@ -27,7 +27,7 @@ class App extends Component {
   state = { lang: "en", mode: "light" };
   componentWillMount() {
     if (!isServer) {
-      const initialLang = window.navigator.language.split("-").shift() || "en";
+      const initialLang = navigator.language.split("-").shift() || "en";
       addLocaleData(require(`react-intl/locale-data/${initialLang}`));
       this.props.establishCurrentUser();
     }
@@ -51,25 +51,9 @@ class App extends Component {
         <ThemeProvider theme={{ mode }}>
           <IntlProvider locale={lang} messages={messages[lang]}>
             <div id="app">
-              <LangSwitchBtn>
-                <button
-                  type="button"
-                  onClick={() => {
-                    this.setState({ lang: "zh", mode: "light" });
-                  }}
-                >
-                  {" "}
-                  中文{" "}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    this.setState({ lang: "en", mode: "dark" });
-                  }}
-                >
-                  {" "}
-                  英文{" "}
-                </button>
+              <LangSwitchBtn lang={lang}>
+                <button name='zh' type="button" onClick={() => { this.setState({ lang: "en", mode: "light" }); }} > {" "} 中文{" "} </button>
+                <button name='en' type="button" onClick={() => { this.setState({ lang: "zh", mode: "dark" }); }} > {" "} 英文{" "} </button>
               </LangSwitchBtn>
               {/* <p> The time is: <FormattedTime value={new Date().getTime()} /> </p> */}
               <div id="content">
@@ -99,6 +83,9 @@ export default withRouter(
 const LangSwitchBtn = styled.div`
   position: absolute;
   right: 0;
+  button { outline: none; border: none; width: 60px; height: 32px;}
+  button[name='zh'] { background-color: #F5DF4D; display: ${props => props.lang === 'zh' ? 'block' : 'none' } }
+  button[name='en'] { background-color: #939597; color: #fff; display: ${props => props.lang === 'en' ? 'block' : 'none' } }
 `;
 
 const titleColor = theme("mode", {
