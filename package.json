@@ -23,9 +23,7 @@
     "not op_mini all"
   ],
   "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
+    "hooks": {}
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
