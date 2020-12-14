@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from "styled-components";
@@ -20,8 +20,9 @@ const RegistGate = styled.div`
   background-color: rgb(147, 149, 151);
   label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 120px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
+  input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
-  input[id='smscode'] { width: 80px; display: inline-block;}
+  input[id='smscode'] { width: 80px; float: left; }
 `
 
 const WelcomeBanner = styled.div`
@@ -70,6 +71,14 @@ const SmsCodeBtn = styled.button`
 
 const Regist = props => {
   const { getFieldProps, validateFields } = props.form;
+  let [countdown, setCount] = useState(0);
+
+  useEffect(() => {
+    if (countdown === 0) return
+    const timer = setTimeout(() => setCount(--countdown), 1000)
+    return () => clearTimeout(timer)
+  }, [countdown])
+
   const submit = () => validateFields((error, value) => {
     if (error) return
     console.log(error, value);
@@ -81,19 +90,19 @@ const Regist = props => {
         <WelcomeBanner>注册页面</WelcomeBanner>
         <form>
           <label htmlFor="phone">手机号</label>
-          <input id='phone' type='text' placeholder="手机号" autoComplete="off"
+          <input id='phone' type='tel' placeholder="手机号" autoComplete="off"
           {...getFieldProps('phone', {
             initialValue: '',
             rules: [{required: true }]
           })} />
           <br/>
           <label htmlFor="smscode">验证码</label>
-          <input id='smscode' type='text' placeholder="验证码" autoComplete="off"
+          <input id='smscode' type='number' placeholder="验证码" autoComplete="off"
           {...getFieldProps('smscode', {
             initialValue: '',
             rules: [{required: true }]
           })} />
-          <SmsCodeBtn>获取验证码</SmsCodeBtn>
+          <SmsCodeBtn disabled={countdown} onClick={() => setCount(60)}>{ countdown || '获取验证码' }</SmsCodeBtn>
           <br/>
           <br/>
           <label htmlFor="passwd">新密码</label>
