@@ -23,6 +23,7 @@ const RegistGate = styled.div`
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
   input[id='smscode'] { width: 80px; float: left; }
+  input[id='rule'] { float: left; ::before { background: #000; }}
 `
 
 const WelcomeBanner = styled.div`
@@ -66,6 +67,15 @@ const SmsCodeBtn = styled.button`
     background-color: #F5DF4D;
     color: #939597;
     padding: 0;
+`
+const RegistRule = styled.div`
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  input, label { margin: 0 }
+  label { width: auto; margin-left: 5px; ::after { content: ''} }
+  label a { color: #F5DF4D }
 `
 
 
@@ -118,6 +128,13 @@ const Regist = props => {
             initialValue: '',
             rules: [{ required: true, }]
           })} />
+          <br/>
+          <RegistRule>
+            <input id="rule" type='checkbox' />
+            <label htmlFor="rule">
+              <a href={`${REACT_APP_ROOT}/policy`}>我同意接受注册条款（点击查看详情）</a>
+            </label>
+          </RegistRule>
         </form>
         <ResetBtn onClick={() => props.form.resetFields()}>重置</ResetBtn>
         <SubmitBtn onClick={submit}>确定</SubmitBtn>
