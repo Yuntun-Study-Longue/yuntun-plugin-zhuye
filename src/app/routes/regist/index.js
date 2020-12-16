@@ -18,12 +18,12 @@ const RegistGate = styled.div`
   width: 320px;
   height: 360px;
   background-color: rgb(147, 149, 151);
-  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 120px; text-align: right; ::after { content: ':'} }
-  input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
+  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 100px; text-align: right; ::after { content: ':'} }
+  input { display: block; padding: 0; color: #939597; width: 145px; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
   input[id='smscode'] { width: 80px; float: left; }
-  input[id='rule'] { float: left; ::before { background: #000; }}
+  input[id='rule'] { float: left; width: auto; ::before { background: #000; }}
 `
 
 const WelcomeBanner = styled.div`
@@ -132,7 +132,7 @@ const Regist = props => {
           <RegistRule>
             <input id="rule" type='checkbox' />
             <label htmlFor="rule">
-              <a href={`${REACT_APP_ROOT}/policy`}>我同意接受注册条款（点击查看详情）</a>
+              <a href={`${REACT_APP_ROOT}/policy`}>我同意接受注册条款</a>
             </label>
           </RegistRule>
         </form>
