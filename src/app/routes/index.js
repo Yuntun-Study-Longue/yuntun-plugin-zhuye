@@ -25,9 +25,16 @@ const Logout = Loadable({
   modules: ["logout"]
 });
 
+const Policy = Loadable({
+  loader: () => import(/* webpackChunkName: "policy" */ "./policy"),
+  loading: () => null,
+  modules: ["policy"]
+})
+
 export default () => (
   <Switch>
     <Route exact path={REACT_APP_ROOT} component={Login} />
+    <Route exact path={`${REACT_APP_ROOT}/policy`} component={Policy} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/regist`} component={Regist} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/login`} component={Login} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/logout`} component={Logout} />

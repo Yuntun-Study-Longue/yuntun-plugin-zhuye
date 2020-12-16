@@ -16,14 +16,14 @@ const RegistGateWrap = styled.div`
 const RegistGate = styled.div`
   position: relative;
   width: 320px;
-  height: 360px;
+  height: 380px;
   background-color: rgb(147, 149, 151);
   label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 100px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: #939597; width: 145px; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
   input[id='smscode'] { width: 80px; float: left; }
-  input[id='rule'] { float: left; width: auto; ::before { background: #000; }}
+  input[id='rule'] { float: left; width: auto; outline: none; ::before { background: #000; }; margin-right: 5px;}
 `
 
 const WelcomeBanner = styled.div`
@@ -76,6 +76,20 @@ const RegistRule = styled.div`
   input, label { margin: 0 }
   label { width: auto; margin-left: 5px; ::after { content: ''} }
   label a { color: #F5DF4D }
+`
+const RuleList = styled.ul`
+  width: 45%;
+  margin: 0 auto;
+  font-size: 12px;
+  li {
+    font-weight: bold;
+    margin: 5px 0;
+    text-decoration: underline;
+    color: #F5DF4D;
+    a { color: #F5DF4D; }
+    ::before { content: '《' }
+    ::after { content: '》' }
+  }
 `
 
 
@@ -130,11 +144,15 @@ const Regist = props => {
           })} />
           <br/>
           <RegistRule>
-            <input id="rule" type='checkbox' />
-            <label htmlFor="rule">
-              <a href={`${REACT_APP_ROOT}/policy`}>我同意接受注册条款</a>
+            <label>
+              <input id="rule" type='checkbox' />
+              <span></span>
+              我已阅读并同意以下条款
             </label>
           </RegistRule>
+          <RuleList>
+            <li><a target='_blank' href={`${REACT_APP_ROOT}/policy`}>云吞自习室注册协议</a></li>
+          </RuleList>
         </form>
         <ResetBtn onClick={() => props.form.resetFields()}>重置</ResetBtn>
         <SubmitBtn onClick={submit}>确定</SubmitBtn>
