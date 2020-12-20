@@ -34,8 +34,8 @@ export const setCurrentUser = user => dispatch =>
       user
     });
 
-    Cookies.set('mywebsite', user);
-
+    Cookies.set('yuntun-website', user, { expires: 7 });
+    
     dispatch({
       type: AUTHENTICATE,
       authenticated: true
@@ -46,7 +46,7 @@ export const setCurrentUser = user => dispatch =>
 
 export const establishCurrentUser = () => dispatch =>
   new Promise(resolve => {
-    let userFromCookie = Cookies.getJSON('mywebsite');
+    let userFromCookie = Cookies.getJSON('yuntun-website');
 
     if (userFromCookie) {
       dispatch(setCurrentUser(userFromCookie));
@@ -56,13 +56,8 @@ export const establishCurrentUser = () => dispatch =>
     }
   });
 
-export const loginUser = (email, password) => dispatch =>
+export const loginUser = (user) => dispatch =>
   new Promise((resolve, reject) => {
-    const user = {
-      email,
-      password,
-      name: 'Awesome User'
-    };
 
     dispatch(setCurrentUser(user));
     resolve(user);
@@ -80,6 +75,6 @@ export const logoutUser = () => dispatch =>
       user: {}
     });
 
-    Cookies.remove('mywebsite');
+    Cookies.remove('yuntun-website');
     resolve({});
   });

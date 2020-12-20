@@ -29,4 +29,5 @@ yarn-error.log*
 .babelrc
 README.md
 setupProxy.js
-.npmrc
+
+package-lock.json

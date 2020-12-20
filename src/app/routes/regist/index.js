@@ -5,14 +5,17 @@ import styled from "styled-components";
 import { createForm } from 'rc-form';
 import Page from '../../components/page';
 import { REACT_APP_ROOT } from "../../constants";
-import { loginUser } from '../../../modules/auth';
+import sa from 'superagent';
+import * as tool from "luna-utils";
+import message from "rc-message";
+import "rc-message/assets/index.css"
 
 const RegistGateWrap = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  `
+`
 const RegistGate = styled.div`
   position: relative;
   width: 320px;
@@ -22,7 +25,7 @@ const RegistGate = styled.div`
   input { display: block; padding: 0; color: #939597; width: 145px; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
-  input[id='smscode'] { width: 80px; float: left; }
+  input[id='code'] { width: 80px; float: left; }
   input[id='rule'] { float: left; width: auto; outline: none; ::before { background: #000; }; margin-right: 5px;}
 `
 
@@ -92,7 +95,6 @@ const RuleList = styled.ul`
   }
 `
 
-
 const Regist = props => {
   const { getFieldProps, validateFields } = props.form;
   let [countdown, setCount] = useState(0);
@@ -103,10 +105,38 @@ const Regist = props => {
     return () => clearTimeout(timer)
   }, [countdown])
 
-  const submit = () => validateFields((error, value) => {
-    if (error) return
-    console.log(error, value);
-  });
+  // 获取验证码
+  function requestCode(e) {
+    e.preventDefault()
+    const phone = document.querySelector('input[type=tel]').value
+    if (!phone) return message.warning({ content: '手机号未填写' })
+
+    tool.deviceUtils.generateSid(phone).then(sid => {
+      sa.get('/webcore/auth/base/yuntun/bind_phone', { phone, sid, type: 'regist'}).then(res => {
+        message.success({ content: '验证码已发送' })
+        setCount(60)
+      })
+    })
+  }
+
+  // 注册
+  function submit(e) {
+    e.preventDefault()
+    validateFields((error, data) => {
+      if (error) return
+      tool.deviceUtils.generateSid(data.phone).then(sid => {
+        sa.post('/webcore/auth/base/yuntun/regist', {...data, sid }).then(res => {
+          const { code, msg, data } = res.body;
+          if (!code) {
+            props.history.push(`${REACT_APP_ROOT}/login`);
+            return message.success({ content: '注册成功' })
+          }
+          return message.error({ content: msg })
+        })
+      })
+    });
+  }
+  
   return <Page title="Login">
     <RegistGateWrap>
       <RegistGate>
@@ -120,25 +150,25 @@ const Regist = props => {
             rules: [{required: true }]
           })} />
           <br/>
-          <label htmlFor="smscode">验证码</label>
-          <input id='smscode' type='number' placeholder="验证码" autoComplete="off"
-          {...getFieldProps('smscode', {
+          <label htmlFor="code">验证码</label>
+          <input id='code' type='number' placeholder="验证码" autoComplete="off"
+          {...getFieldProps('code', {
             initialValue: '',
             rules: [{required: true }]
           })} />
-          <SmsCodeBtn disabled={countdown} onClick={() => setCount(60)}>{ countdown || '获取验证码' }</SmsCodeBtn>
+          <SmsCodeBtn disabled={countdown} onClick={requestCode.bind(this)}>{ countdown || '获取验证码' }</SmsCodeBtn>
           <br/>
           <br/>
           <label htmlFor="passwd">新密码</label>
           <input id='passwd' type='password' placeholder="请输入新密码" autoComplete="new-password"
-          {...getFieldProps('new-password', {
+          {...getFieldProps('new_passwd', {
             initialValue: '',
             rules: [{ required: true, }]
           })} />
           <br/>
           <label htmlFor="passwd">密码</label>
           <input id='passwd' type='password' placeholder="请重复输入密码" autoComplete="password"
-          {...getFieldProps('password', {
+          {...getFieldProps('repeat_passwd', {
             initialValue: '',
             rules: [{ required: true, }]
           })} />
@@ -155,14 +185,14 @@ const Regist = props => {
           </RuleList>
         </form>
         <ResetBtn onClick={() => props.form.resetFields()}>重置</ResetBtn>
-        <SubmitBtn onClick={submit}>确定</SubmitBtn>
+        <SubmitBtn onClick={submit.bind(this)}>确定</SubmitBtn>
       </RegistGate>
     </RegistGateWrap>
   </Page>
 }
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loginUser }, dispatch);
+  bindActionCreators({}, dispatch);
 
 export default connect(
   null,

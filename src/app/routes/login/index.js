@@ -6,6 +6,10 @@ import { createForm } from 'rc-form';
 import Page from '../../components/page';
 import { loginUser } from '../../../modules/auth';
 import { REACT_APP_ROOT } from "../../constants";
+import sa from 'superagent';
+import * as tool from "luna-utils";
+import message from "rc-message";
+import "rc-message/assets/index.css"
 
 const LoginGateWrap = styled.div`
   height: 100vh;
@@ -49,25 +53,34 @@ const RegistBtn = styled(Button)`
 
 const Login = props => {
   const { getFieldProps, validateFields } = props.form;
-  const submit = () => validateFields((error, value) => {
+  const submit = () => validateFields((error, data) => {
     if (error) return
-    console.log(error, value);
+    tool.deviceUtils.generateSid(data.phone).then(sid => {
+      sa.get('/webcore/auth/base/yuntun/login', {...data, sid }).then(res => {
+        const { code, msg, data } = res.body;
+        if (!code) {
+          props.loginUser(data)
+          return message.success({ content: '登陆成功'})
+        }
+        return message.error({ content: '登陆失败:' + msg})
+      })
+    })
   });
   return <Page title="Login">
     <LoginGateWrap>
       <LoginGate>
         <WelcomeBanner>登录页面</WelcomeBanner>
         <form>
-          <label htmlFor="name">请输入用户名</label>
-          <input id='name' type='text' placeholder="用户名" autoComplete="off"
-          {...getFieldProps('username', {
+          <label htmlFor="phone">请输入手机号</label>
+          <input id='phone' type='text' placeholder="手机号" autoComplete="off"
+          {...getFieldProps('phone', {
             initialValue: '',
             rules: [{required: true }]
           })} />
           <br/>
           <label htmlFor="passwd">请输入密码</label>
           <input id='passwd' type='password' placeholder="密码" autoComplete="new-password"
-          {...getFieldProps('password', {
+          {...getFieldProps('passwd', {
             initialValue: '',
             rules: [{ required: true, }]
           })} />

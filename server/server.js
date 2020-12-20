@@ -7,6 +7,7 @@ import path from 'path';
 import forceDomain from 'forcedomain';
 import Loadable from 'react-loadable';
 import cookieParser from 'cookie-parser';
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 // Our loader - this basically acts as the entry point for each page load
 import loader from './loader';
@@ -45,6 +46,7 @@ app.use(cookieParser());
 app.use(express.Router().get('/', loader));
 app.use(express.static(path.resolve(__dirname, '../build')));
 app.use(loader);
+
 
 // We tell React Loadable to load all required assets and start listening - ROCK AND ROLL!
 Loadable.preloadAll().then(() => {
