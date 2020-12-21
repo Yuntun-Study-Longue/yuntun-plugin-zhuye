@@ -1,7 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
-export const UltimateGray = '#939597'
-export const Illuminating = '#F5DF4D'
-export const YueBai = `rgb(214, 236, 240)`
+import * as colors from './colors';
 
 export const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -32,7 +30,7 @@ footer, header, hgroup, menu, nav, section {
 body {
     line-height: 1;
     font-family: PingFangSC-Light, Microsoft YaHei, sans-serif;
-    background-color: ${YueBai}
+    background-color: ${colors.YueBai}
 }
 ol, ul {
 	list-style: none;
