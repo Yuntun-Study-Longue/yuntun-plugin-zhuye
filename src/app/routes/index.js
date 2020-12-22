@@ -6,7 +6,7 @@ import Loadable from "react-loadable";
 import { REACT_APP_ROOT } from "../constants";
 
 import NotFound from "./not-found";
-import cardList from "./card-list";
+import cardList from "./shop-list";
 
 const Regist = Loadable({
   loader: () => import(/* webpackChunkName: "regist" */ "./regist"),
@@ -32,20 +32,20 @@ const Policy = Loadable({
   modules: ["policy"]
 });
 
-const CardList = Loadable({
-  loader: () => import(/* webpackChunkName: "cardlist" */ "./card-list"),
+const ShopList = Loadable({
+  loader: () => import(/* webpackChunkName: "shoplist" */ "./shop-list"),
   loading: () => null,
-  modules: ["cardlist"]
+  modules: ["shoplist"]
 });
 
 export default () => (
   <Switch>
     <Route exact path={REACT_APP_ROOT} component={Login} />
     <Route exact path={`${REACT_APP_ROOT}/policy`} component={Policy} />
-    <Route exact path={`${REACT_APP_ROOT}/cardlist`} component={CardList} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/regist`} component={Regist} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/login`} component={Login} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/logout`} component={Logout} />
+    <Route path={`${REACT_APP_ROOT}/shoplist`} component={ShopList} />
     <Route component={NotFound} />
   </Switch>
 );
