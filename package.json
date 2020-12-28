@@ -14,7 +14,8 @@
     "oss": "ossutilmac64 cp -r ./src/app/assets oss://ysl-luna/yuntun_web/static/media --update && ossutilmac64 cp -r ./build/static oss://ysl-luna/$npm_package_name/$npm_package_version/static --update && ossutilmac64 cp -r ./build oss://ysl-luna/$npm_package_name/$npm_package_version --exclude static --update",
     "assets": "cpy 'src/**/*.jpg' 'dist/' --parents && cpy 'src/**/*.png' 'dist/' --parents && cpy 'src/**/*.css' 'dist/' --parents",
     "publish:full": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm publish && npm run oss",
-    "publish:simple": "npm publish"
+    "publish:simple": "npm publish",
+    "preinstall": "npm cache clean --force"
   },
   "browserslist": [
     ">0.2%",
