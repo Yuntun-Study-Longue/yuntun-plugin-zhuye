@@ -10,7 +10,7 @@ const SITE_URL =
 
 const FACEBOOK_APP_ID = 'XXXXXXXXX';
 
-const defaultTitle = 'My Website';
+const defaultTitle = '云吞';
 const defaultDescription =
   'This is a really awesome website where we can render on the server. Supa cool.';
 // const defaultImage = `${SITE_URL}${logo}`;

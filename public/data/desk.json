@@ -1,0 +1,17 @@
+[
+    {
+        "name": "小桌 - 图右", 
+        "cover": "http://yuntun-web.oss-cn-beijing.aliyuncs.com/8ffd7e2e1f2bf1fa6b4a703701d929ac",
+        "description": "小桌是图片右边的蓝色桌子，和学校课桌一样大小，小桌的规格都是一样的，可以调节桌椅高低，结实稳固不摇晃。"
+    },
+    {
+        "name": "大桌", 
+        "cover": "http://yuntun-web.oss-cn-beijing.aliyuncs.com/4e829fa05b46e70c6d611e705713e1ab",
+        "description": "大桌是图片左边的白色桌子，可以同时在桌面上放电脑和书，很适合长期学习的同学，桌面上也可以放个小书架。"
+    },
+    {
+        "name": "1v2桌 - 图左", 
+        "cover": "http://yuntun-web.oss-cn-beijing.aliyuncs.com/1b425c411e34de0322cd414202abc897",
+        "description": "1v2桌的灵感来源于北邮教二五层自习室，是一款经典的桌型，由两张小桌拼凑而成，专为同考情侣打造的桌型。一张1v2桌子就可以让彼此有个固定的学习位置，非常划算。"
+    }
+]

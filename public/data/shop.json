@@ -1,0 +1,75 @@
+[
+    {
+        "city": "北京",
+        "name": "蓟门里店",
+        "addr": "北京市海淀区北三环中路蓟门里小区务实写字楼443室",
+        "detail": "蓟门里店314是云吞自习室的第一间自习室，开业于2019年元宵节。经过两年的发展，云吞自习室在北京已有三家门店，杭州一家门店共计10间自习室，服务了近千位同学。",
+        "tels": [
+            13051580153,
+            13120485314
+        ],
+        "wx": "yuntun314",
+        "tags": [
+            "WIFI超好",
+            "干净整洁",
+            "有管理员",
+            "性价比高",
+            "支持转卡",
+            "支持跨店"
+        ],
+        "images": [
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/de07b6745134670db3447323e5e9b323",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/4066d88539bfa9daa9d997457f750f80",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/bb6399826e2591dc46e41bf1e1cf8c10",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/8ffd7e2e1f2bf1fa6b4a703701d929ac",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/9c614c1484d4635c578adf154790cef6",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/1b425c411e34de0322cd414202abc897",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/ad443bfd72a4fc03e0e55d6724ef1407",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/96175f6f09f9a07b5bf381ec451a07d4"
+        ]
+    },
+    {
+        "city": "北京",
+        "name": "文慧园店",
+        "addr": "北京市海淀区文慧园路6号楼五月华庭A座写字楼341室",
+        "detail": "文慧园店341是云吞自习室第二家自习室，开业于2020年7月。周边有地标建筑小西天牌楼以及一家宝藏电影院 —— 电影资料馆。",
+        "tels": [
+            13051580153,
+            13120485314
+        ],
+        "wx": "yuntun314",
+        "tags": [
+            "WIFI超好",
+            "干净整洁",
+            "学习氛围好",
+            "性价比高",
+            "豪华洗手间",
+            "有餐区",
+            "支持转卡",
+            "支持跨店"
+        ],
+        "images": [
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/35e11c9318aa63a361a8953353e107c8",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/a019311fe82f3c4862e25af59b035e03",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/bc96d100d86b0e3180d36c24a847a5ec",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/59e1950deac0e58307eebb476c815fcf",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/c52dfe744f51920370e0c161b6162125",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/775aa0f3b579359fe09be351cbe4473c",
+            "http://yuntun-web.oss-cn-beijing.aliyuncs.com/8f857cc69a3904da11eb43698777471f"
+        ]
+    },
+    {
+        "city": "杭州",
+        "name": "下沙学源店",
+        "addr": "浙江省杭州市下沙区学源街艾肯金座写字楼1604室",
+        "detail": "杭州下沙店是云吞自习室杭州分店，将于2021年初开业，北京店和杭州店自习卡在有效期内可互通，敬请期待！",
+        "tels": [18738798521],
+        "wx": "yuntun314",
+        "tags": [
+            "WIFI超好",
+            "干净整洁",
+            "性价比高"
+        ],
+        "images": ["http://yuntun-web.oss-cn-beijing.aliyuncs.com/aad1511d2c9ee0a8bfa8a97f47c161f0"]
+    }
+]

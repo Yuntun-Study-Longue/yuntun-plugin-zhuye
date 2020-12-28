@@ -6,6 +6,7 @@ import { withRouter } from "react-router";
 import { IntlProvider, addLocaleData, FormattedMessage, FormattedTime } from "react-intl";
 import theme from "styled-theming";
 import styled, { ThemeProvider } from "styled-components";
+import * as colors from "./global/colors";
 
 // Action creators and helpers
 import { establishCurrentUser } from "../modules/auth";
@@ -24,7 +25,7 @@ const messages = {
 };
 
 class App extends Component {
-  state = { lang: "en", mode: "light" };
+  state = { lang: "en", mode: "dark" };
   componentWillMount() {
     if (!isServer) {
       const initialLang = navigator.language.split("-").shift() || "en";
@@ -52,8 +53,8 @@ class App extends Component {
           <IntlProvider locale={lang} messages={messages[lang]}>
             <div id="app">
               <LangSwitchBtn lang={lang}>
-                <button name='zh' type="button" onClick={() => { this.setState({ lang: "en", mode: "light" }); }} > {" "} 中文{" "} </button>
-                <button name='en' type="button" onClick={() => { this.setState({ lang: "zh", mode: "dark" }); }} > {" "} 英文{" "} </button>
+                <button name='zh' type="button" onClick={() => { this.setState({ lang: "en", mode: "dark" }); }} > {" "} 中文{" "} </button>
+                <button name='en' type="button" onClick={() => { this.setState({ lang: "zh", mode: "light" }); }} > {" "} 英文{" "} </button>
               </LangSwitchBtn>
               {/* <p> The time is: <FormattedTime value={new Date().getTime()} /> </p> */}
               <div id="content">
@@ -81,11 +82,14 @@ export default withRouter(
 );
 
 const LangSwitchBtn = styled.div`
-  position: absolute;
+  z-index: 999;
+  position: fixed;
   right: 0;
+  bottom: 0;
+  opacity: 0.6;
   button { outline: none; border: none; width: 60px; height: 32px;}
   button[name='zh'] { background-color: #F5DF4D; display: ${props => props.lang === 'zh' ? 'block' : 'none' } }
-  button[name='en'] { background-color: #939597; color: #fff; display: ${props => props.lang === 'en' ? 'block' : 'none' } }
+  button[name='en'] { background-color: ${colors.Dousha}; color: #fff; display: ${props => props.lang === 'en' ? 'block' : 'none' } }
 `;
 
 const titleColor = theme("mode", {

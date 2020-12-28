@@ -28,6 +28,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+	overflow-y: scroll;
     line-height: 1;
     font-family: PingFangSC-Light, Microsoft YaHei, sans-serif;
     background-color: ${colors.YueBai}

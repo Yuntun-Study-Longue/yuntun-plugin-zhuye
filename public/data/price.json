@@ -1,0 +1,62 @@
+{
+    "蓟门里店": [
+        { 
+            "name": "小桌",
+            "prices": [
+            { "type": "月卡", "price": 500, "discount_price": 314 },
+            { "type": "季卡", "price": 1440 },
+            { "type": "半年卡", "price": 2700 },
+            { "type": "年卡", "price": 4800 },
+            { "type": "30次卡", "price": 900 }
+        ]},
+        { 
+            "name": "大桌",
+            "prices": [
+            { "type": "月卡", "price": 600 },
+            { "type": "季卡", "price": 1680 },
+            { "type": "半年卡", "price": 3200 },
+            { "type": "年卡", "price": 6000 },
+            { "type": "30次卡", "price": 900 }
+        ]},
+        { 
+            "name": "1v2桌",
+            "prices": [
+            { "type": "月卡", "price": 600 },
+            { "type": "季卡", "price": 1680 },
+            { "type": "半年卡", "price": 3200 },
+            { "type": "年卡", "price": 6000 },
+            { "type": "30次卡", "price": 900 }
+        ]}
+    ],
+    "文慧园店": [
+        { "name": "大桌",
+            "prices": [
+            { "type": "月卡", "price": 600 },
+            { "type": "季卡", "price": 1680 },
+            { "type": "半年卡", "price": 3200 },
+            { "type": "年卡", "price": 6000 },
+            { "type": "30次卡", "price": 900 }
+        ]}
+    ],
+    "下沙学源店": [
+        { 
+            "name": "小桌",
+            "prices": [
+                { "type": "月卡", "price": 500, "discount_price": 314 },
+                { "type": "季卡", "price": 1440 },
+                { "type": "半年卡", "price": 2700 },
+                { "type": "年卡", "price": 4800 },
+                { "type": "30次卡", "price": 900 }
+            ]
+        },
+        { 
+            "name": "大桌",
+            "prices": [
+            { "type": "月卡", "price": 600 },
+            { "type": "季卡", "price": 1680 },
+            { "type": "半年卡", "price": 3200 },
+            { "type": "年卡", "price": 6000 },
+            { "type": "30次卡", "price": 900 }
+        ]}
+    ]
+}
