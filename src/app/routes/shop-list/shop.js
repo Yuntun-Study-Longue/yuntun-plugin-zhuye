@@ -1,9 +1,11 @@
 import React, {useState, useEffect, Fragment} from 'react';
+import { render } from 'react-dom';
 import GridLayout from 'react-grid-layout';
 import styled from 'styled-components';
 import * as colors from '../../global/colors';
 import sa from "superagent";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import marked from 'marked';
 // const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const data = Array.from({ length: 4 }).map((_, i) => ({i: ''+i, x: 0, y: 2 * i, w: 5, h: 2, static: true}))
@@ -69,17 +71,23 @@ const StickyHeader = styled.div`
 `
 StickyHeader.defaultProps = { variant: 'default' }
 
+const YearlyArticle = styled.article`
+    width: 95%;
+`
+YearlyArticle.defaultProps = { variant: 'default' }
+
 const Shop = () => {
     const [shopItems, setShopItems] = useState([]);
     const [itemData, setItemData] = useState(null);
+    const [content, setContent] = useState('');
     useEffect(() => {
         sa.get('/data/shop.json').then(res => setShopItems(res.body))
+        sa.get('/data/2021_ZH.md').then(res => setContent(res.text))
         return
     }, [])
-
     return <GridLayout className="layout" layout={layout} cols={12} rowHeight={40} width={document.body.clientWidth}>
         <ShopItem key="main" className="container" style={{overflowY: "auto"}}>
-            {!itemData ? <p>show time</p> : <Fragment>
+                {!itemData ? <YearlyArticle dangerouslySetInnerHTML={{__html: marked(content)}}></YearlyArticle> : <Fragment>
                 <StickyHeader>
                     <h1>{itemData.name}介绍 </h1>
                     <p className="tel"><a href={`tel:${itemData.tels[0]}`}>联系门店管理员</a></p>
