@@ -21,7 +21,7 @@ const LoginGate = styled.div`
   width: 320px;
   height: 240px;
   background-color: rgb(147, 149, 151);
-  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 120px; text-align: right; ::after { content: ':'} }
+  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 100px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
 `
@@ -66,7 +66,7 @@ const Login = props => {
       })
     })
   });
-  return <Page title="Login">
+  return <Page title="登录页面">
     <LoginGateWrap>
       <LoginGate>
         <WelcomeBanner>登录页面</WelcomeBanner>

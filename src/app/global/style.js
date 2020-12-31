@@ -63,7 +63,8 @@ article {
 	h2,h3 { margin-top: 1em; margin-bottom: .5em; font-weight: 300; font-size: 16px; font-weight: bold;}
 	h2 {text-indent:0; font-size: 12px !important;font-weight: 200; line-height: 16px; margin: .5em 0;}
 
-	p { margin-top: 0; margin-bottom: .5em; font-size: 14px; text-indent: 2em;}
+	p { margin-top: 0; margin-bottom: .5em; font-size: 14px; text-indent: 1em;}
+	img { width: 90%; }
 	a {
 		background-image: linear-gradient(#449, #449);
 		background-size: 0.06em 0.06em;

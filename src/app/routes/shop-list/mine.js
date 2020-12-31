@@ -5,6 +5,7 @@ import GridLayout from 'react-grid-layout';
 import * as colors from '../../global/colors';
 import UserEnum from '../../global/userenum';
 import { REACT_APP_ROOT } from "../../constants";
+import * as tool from "luna-utils";
 // import { loginUser } from '../../../modules/auth';
 
 const cardInfo = {i: "card", x: 0.5, y: 1, w: 3, h: 3, static: true };
@@ -47,6 +48,7 @@ const InfoItem = styled.div`
 InfoItem.defaultProps = { variant: 'default' }
 
 const Mine = ({ history, currentUser, isAuthenticated }) => {
+    const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     useEffect(() => {
         if (!isAuthenticated) setTimeout(() => history.push(`${REACT_APP_ROOT}/login`), 500);
     }, [])

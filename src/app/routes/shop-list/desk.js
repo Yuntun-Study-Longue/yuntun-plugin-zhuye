@@ -4,7 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import styled from 'styled-components';
 import sa from "superagent";
 import * as colors from '../../global/colors';
-
+import * as tool from "luna-utils";
 
 const data = Array.from({ length: 3 }).map((_, i) => ({i: ''+i}))
 const getLayoutsFromSomewhere = () => {
@@ -26,6 +26,7 @@ const DeskItem = styled.div`
 DeskItem.defaultProps = { variant: 'default' }
 
 const Desk = () => {
+    const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     const [DeskItems, setDeskItems] = useState([]);
 
     useEffect(() => {

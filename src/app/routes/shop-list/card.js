@@ -5,6 +5,7 @@ import * as colors from '../../global/colors';
 import sa from "superagent";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Select from 'react-select';
+import * as tool from "luna-utils";
 
 import WechatJSSDK from 'wechat-jssdk';
 // https://developers.weixin.qq.com/community/develop/article/doc/000a0cd7e586d028cddadad9459413
@@ -15,12 +16,11 @@ import WechatJSSDK from 'wechat-jssdk';
 //       "appSecret": "f17207d6d52c8b77bc1b0a3e8e64d874",
 //     }
 // })
-
 const getLayoutsFromSomewhere = () => {
-    const lgLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i*3%12, y: 0, w: 3, h: 2, static: true}))
-    const mdLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i%10, y: 0, w: 1, h: 2, static: true}))
-    const smLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i%6, y: 0, w: 1, h: 2, static: true}))
-    const xsLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i%2 ? (i-1)*2 : i*2, y: 0, w: 2, h: 2, static: true}))
+    const lgLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i*3%12, y: 0, w: 3, h: 2, static: true}))
+    const mdLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i%10, y: 0, w: 1, h: 2, static: true}))
+    const smLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i%6, y: 0, w: 1, h: 2, static: true}))
+    const xsLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i%2 ? (i-1)*2 : i*2, y: 0, w: 2, h: 2, static: true}))
     return { lg: lgLayout, md: mdLayout, xs: xsLayout }
 }
 
@@ -54,6 +54,7 @@ const PurchaseBtn = styled.button`
 PurchaseBtn.defaultProps = { variant: 'default' }
 
 const Card = () => {
+    const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     const layouts = getLayoutsFromSomewhere();
     const [cardItems, setCardItems] = useState([]);
     const [DeskItems, setDeskItems] = useState({});

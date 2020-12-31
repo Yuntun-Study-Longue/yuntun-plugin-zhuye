@@ -6,8 +6,8 @@ import * as colors from '../../global/colors';
 import sa from "superagent";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import marked from 'marked';
+import * as tool from "luna-utils";
 // const ResponsiveGridLayout = WidthProvider(Responsive);
-
 const data = Array.from({ length: 4 }).map((_, i) => ({i: ''+i, x: 0, y: 2 * i, w: 5, h: 2, static: true}))
 const layout = [
     {i: 'main', x: 5, y: 0, w: 7, h: 10, static: true},
@@ -18,6 +18,7 @@ const ShopItem = styled.div`
     padding: 0 4px;
     color: ${colors.ItemColor};
     background-color: ${colors.ItemBgColor};
+    a { text-decoration: none;};
     h1 {font-size: 16px; line-height: 24px; font-weight: bold; i {font-size: 12px;}}
     span {font-size: 12px;}
     .addr, .tel, .wx, .tags, .scroll-info, .detail {font-size: 12px; }
@@ -41,7 +42,10 @@ const ShopItem = styled.div`
     .addr, .detail { margin-bottom: .5em; line-height: 18px; }
     .addr { ::before {content: "门店地址："}}
     .detail {::before {content: '简介：'}}
-    &.link-us { display: flex; justify-content: center; align-items: center; * {font-size: 32px;font-weight: bolder;}}
+    &.link-us { * {font-size: 32px;font-weight: bolder;}}
+    .add {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+    .lh {position: absolute; bottom: .5em; color: ${colors.ItemColor};font-size:12px;width: 100%; text-align: center;}
+
     .container {
         /* ::-webkit-scrollbar
         {  
@@ -77,6 +81,7 @@ const YearlyArticle = styled.article`
 YearlyArticle.defaultProps = { variant: 'default' }
 
 const Shop = () => {
+    const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     const [shopItems, setShopItems] = useState([]);
     const [itemData, setItemData] = useState(null);
     const [content, setContent] = useState('');
@@ -112,6 +117,7 @@ const Shop = () => {
         }
         {shopItems.length ? <ShopItem className="link-us" key={''+ shopItems.length}>
             <span className="add">「+」</span>
+            <a href="https://beian.miit.gov.cn" target="_blank"><span class="lh">京ICP备19017278号-1</span></a>
         </ShopItem> : <ShopItem key={data.length}></ShopItem>}
     </GridLayout>
 }

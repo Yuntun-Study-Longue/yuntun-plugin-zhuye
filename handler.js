@@ -148,6 +148,7 @@ exports.register = function(server, options, next) {
       method: "GET",
       path: "/{param*}",
       config: {
+        auth: false,
         handler: handlSSR,
         tags: ["web"]
       }

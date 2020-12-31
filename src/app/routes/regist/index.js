@@ -137,7 +137,7 @@ const Regist = props => {
     });
   }
   
-  return <Page title="Login">
+  return <Page title="注册页面">
     <RegistGateWrap>
       <RegistGate>
         <BackBtn onClick={() => props.history.goBack()}>返回</BackBtn>

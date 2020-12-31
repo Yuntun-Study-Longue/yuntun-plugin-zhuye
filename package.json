@@ -1,7 +1,7 @@
 {
   "name": "yuntun-plugin-zhuye",
   "homepage": "https://ysl-luna.oss-cn-beijing.aliyuncs.com",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "private": false,
   "scripts": {
@@ -15,6 +15,7 @@
     "assets": "cpy 'src/**/*.jpg' 'dist/' --parents && cpy 'src/**/*.png' 'dist/' --parents && cpy 'src/**/*.css' 'dist/' --parents",
     "publish:full": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm publish && npm run oss",
     "publish:simple": "npm publish",
+    "publish:local": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm run oss",
     "preinstall": "npm cache clean --force"
   },
   "browserslist": [
@@ -74,8 +75,7 @@
     "superagent": "^6.1.0"
   },
   "dependencies": {
-    "i": "^0.3.6",
-    "luna-utils": "^1.0.1",
+    "luna-utils": "^1.0.2",
     "marked": "^1.2.7",
     "npm": "^6.14.10",
     "rc-form": "^2.4.11",

@@ -1,5 +1,10 @@
 [
     {
+        "name": "试用卡",
+        "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/kEmSa1ffuNGmK8EmSi7FJWbwZkHRF1YoRkMzwcflATHaSp_NVTbCZHS8pMjjuB6X?media-id=kEmSa1ffuNGmK8EmSi7FJWbwZkHRF1YoRkMzwcflATHaSp_NVTbCZHS8pMjjuB6X&appid=wx678687fa5226e237",
+        "description": ""
+    },
+    {
         "name": "月卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/k3LX1WELiTrI3TN62DwncB4rbgXbKGON9T3rLIt9u3SNUpgsQGxMJeBFODB2xFqw?media-id=k3LX1WELiTrI3TN62DwncB4rbgXbKGON9T3rLIt9u3SNUpgsQGxMJeBFODB2xFqw&appid=wx678687fa5226e237",
         "description": ""
