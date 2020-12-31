@@ -63,8 +63,8 @@ const Card = () => {
     const [selectedShop, setSelectedShop] = useState(null);
     const [selectedDesk, setSelectedDesk] = useState(null);
     useEffect(() => {
-        sa.get('/data/card.json').then(res => setCardItems(res.body))
-        sa.get('/data/price.json').then(res => {
+        sa.get('/data/card.json?t='+ new Date().getTime()).then(res => setCardItems(res.body))
+        sa.get('/data/price.json?t='+ new Date().getTime()).then(res => {
             console.log(res.body)
             const options = Object.keys(res.body).map(item => ({ value: item, label: item }))
             setShopOptions(options);

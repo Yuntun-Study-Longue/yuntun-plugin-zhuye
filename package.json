@@ -1,7 +1,7 @@
 {
   "name": "yuntun-plugin-zhuye",
   "homepage": "https://ysl-luna.oss-cn-beijing.aliyuncs.com",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "private": false,
   "scripts": {

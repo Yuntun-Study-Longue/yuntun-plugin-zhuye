@@ -86,8 +86,8 @@ const Shop = () => {
     const [itemData, setItemData] = useState(null);
     const [content, setContent] = useState('');
     useEffect(() => {
-        sa.get('/data/shop.json').then(res => setShopItems(res.body))
-        sa.get('/data/2021_ZH.md').then(res => setContent(res.text))
+        sa.get('/data/shop.json?t='+ new Date().getTime()).then(res => setShopItems(res.body))
+        sa.get('/data/2021_ZH.md?t=' + new Date().getTime()).then(res => setContent(res.text))
         return
     }, [])
     return <GridLayout className="layout" layout={layout} cols={12} rowHeight={40} width={document.body.clientWidth}>
