@@ -31,8 +31,7 @@ const Desk = () => {
 
     useEffect(() => {
         sa.get('/data/desk.json').then(res => setDeskItems(res.body))
-
-    });
+    }, []);
     const layouts = getLayoutsFromSomewhere();
     return <ResponsiveGridLayout className="layout" layouts={layouts}
         width={document.body.clientWidth}

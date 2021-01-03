@@ -1,7 +1,7 @@
 {
   "name": "yuntun-plugin-zhuye",
-  "homepage": "https://ysl-luna.oss-cn-beijing.aliyuncs.com",
-  "version": "0.0.2",
+  "homepage": "https://images.yuntun-bj.com",
+  "version": "0.0.3",
   "main": "index.js",
   "private": false,
   "scripts": {
@@ -11,13 +11,12 @@
     "eject": "react-scripts eject",
     "serve": "cross-env NODE_ENV=production node ./server/index.js",
     "es5": "babel handler.js -o index.js && babel src -d dist/src",
-    "oss": "ossutilmac64 cp -r ./src/app/assets oss://ysl-luna/yuntun_web/static/media --update && ossutilmac64 cp -r ./build/static oss://ysl-luna/$npm_package_name/$npm_package_version/static --update && ossutilmac64 cp -r ./build oss://ysl-luna/$npm_package_name/$npm_package_version --exclude static --update",
+    "oss": "ossutilmac64 cp -r ./src/app/assets oss://yuntun-web/yuntun_web/static/media --update && ossutilmac64 cp -r ./build/static oss://yuntun-web/$npm_package_name/$npm_package_version/static --update && ossutilmac64 cp -r ./build oss://yuntun-web/$npm_package_name/$npm_package_version --exclude static --update",
     "assets": "cpy 'src/**/*.jpg' 'dist/' --parents && cpy 'src/**/*.png' 'dist/' --parents && cpy 'src/**/*.css' 'dist/' --parents",
     "publish:full": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm publish && npm run oss",
     "publish:simple": "npm publish",
     "publish:local": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm run oss",
-    "preinstall": "npm cache clean --force",
-    "prepublish:local": "npm link luna-utils"
+    "preinstall": "npm cache clean --force"
   },
   "browserslist": [
     ">0.2%",
