@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import Helmet from 'react-helmet';
-// import logo from '../../assets/logo.jpg';
 
 const SITE_URL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://cra-ssr.herokuapp.com';
-
-const FACEBOOK_APP_ID = 'XXXXXXXXX';
+    : 'https://yuntun-bj.com';
 
 const defaultTitle = '云吞';
 const defaultDescription =
-  'This is a really awesome website where we can render on the server. Supa cool.';
-// const defaultImage = `${SITE_URL}${logo}`;
-const defaultTwitter = '@cereallarceny';
+  '云吞教育科技有限公司线下主要产品是云吞自习室，致力于考研、考博、考证等能力提升证明的备考，提供安静、舒适的学习环境';
 const defaultSep = ' | ';
 
 class Page extends Component {
@@ -39,26 +34,12 @@ class Page extends Component {
     const theDescription = description
       ? description.substring(0, 155)
       : defaultDescription;
-    // const theImage = image ? `${SITE_URL}${image}` : defaultImage;
 
     const metaTags = [
       { itemprop: 'name', content: theTitle },
       { itemprop: 'description', content: theDescription },
-      // { itemprop: 'image', content: theImage },
-      { name: 'description', content: theDescription },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      { name: 'twitter:site', content: defaultTwitter },
-      { name: 'twitter:title', content: theTitle },
-      { name: 'twitter:description', content: theDescription },
-      { name: 'twitter:creator', content: twitter || defaultTwitter },
-      // { name: 'twitter:image:src', content: theImage },
-      { property: 'og:title', content: theTitle },
-      { property: 'og:type', content: contentType || 'website' },
-      { property: 'og:url', content: SITE_URL + pathname },
-      // { property: 'og:image', content: theImage },
-      { property: 'og:description', content: theDescription },
-      { property: 'og:site_name', content: defaultTitle },
-      { property: 'fb:app_id', content: FACEBOOK_APP_ID }
+      { name: 'keywords', content: '务实写字楼,314,1v2桌,自习室,24h自习,海淀自习室,蓟门里,文慧园,积水潭,大钟寺,最近自习室'},
+      { name: 'description', content: theDescription }
     ];
 
     if (noCrawl) {
@@ -88,7 +69,7 @@ class Page extends Component {
       <div id={id} className={className}>
         <Helmet
           htmlAttributes={{
-            lang: 'en',
+            lang: 'zh-CN',
             itemscope: undefined,
             itemtype: `http://schema.org/${rest.schema || 'WebPage'}`
           }}
