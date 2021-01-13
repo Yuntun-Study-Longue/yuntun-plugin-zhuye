@@ -10,7 +10,7 @@ import * as tool from "luna-utils";
 // const ResponsiveGridLayout = WidthProvider(Responsive);
 const data = Array.from({ length: 4 }).map((_, i) => ({i: ''+i, x: 0, y: 2 * i, w: 5, h: 2, static: true}))
 const layout = [
-    {i: 'main', x: 5, y: 0, w: 7, h: 10, static: true},
+    {i: 'main', x: 5, y: 0, w: 7, h: 17, minH:10, maxH:20, static: true},
 ].concat(data);
 
 const ShopItem = styled.div`
@@ -44,20 +44,15 @@ const ShopItem = styled.div`
     .detail {::before {content: '简介：'}}
     &.link-us { * {font-size: 32px;font-weight: bolder;}}
     .add {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
-    .lh {position: absolute; bottom: .5em; color: ${colors.ItemColor};font-size:12px;width: 100%; text-align: center;}
+    .lh, .ci, .ca {position: absolute; bottom: .5em; color: ${colors.ItemColor};font-size:8px;width: 100%; text-align: center;}
+    .ci { bottom: 4.5em;}
+    .ca { bottom: 2.5em;}
+    
+    
 
-    .container {
-        /* ::-webkit-scrollbar
-        {  
-            width: 4px;  
-            height: 4px;  
-            background-color: ${colors.ScrollBarColor};  
-        }
-        ::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-           background: #000;
-        } */
-    }
+    /* .container {
+        height: 100vh !important;
+    } */
 `
 ShopItem.defaultProps = { variant: 'default' }
 
@@ -76,7 +71,7 @@ const StickyHeader = styled.div`
 StickyHeader.defaultProps = { variant: 'default' }
 
 const YearlyArticle = styled.article`
-    width: 95%;
+    /* width: auto !important; */
 `
 YearlyArticle.defaultProps = { variant: 'default' }
 
@@ -91,7 +86,7 @@ const Shop = () => {
         return
     }, [])
     return <GridLayout className="layout" layout={layout} cols={12} rowHeight={40} width={document.body.clientWidth}>
-        <ShopItem key="main" className="container" style={{overflowY: "auto"}}>
+        <ShopItem key="main" className="container" style={{overflowY: "auto", height: '100vh !important'}}>
                 {!itemData ? <YearlyArticle dangerouslySetInnerHTML={{__html: marked(content)}}></YearlyArticle> : <Fragment>
                 <StickyHeader>
                     <h1>{itemData.name}介绍 </h1>
@@ -116,8 +111,10 @@ const Shop = () => {
             </ShopItem>) : data.map(item => <ShopItem key={item.i}></ShopItem>)
         }
         {shopItems.length ? <ShopItem className="link-us" key={''+ shopItems.length}>
-            <span className="add">「+」</span>
-            <a href="https://beian.miit.gov.cn" target="_blank"><span class="lh">京ICP备19017278号-1</span></a>
+            {/* <span className="add">「+」</span> */}
+            <p className="ci">云吞（北京）教育科技有限公司</p>
+            <p className="ca">北京市海淀区文慧园路6号1号楼3层A341室</p>
+            <a href="https://beian.miit.gov.cn" target="_blank"><span className="lh">京ICP备19017278号-1</span></a>
         </ShopItem> : <ShopItem key={data.length}></ShopItem>}
     </GridLayout>
 }

@@ -7,7 +7,7 @@ const SITE_URL =
     ? 'http://localhost:3000'
     : 'https://yuntun-bj.com';
 
-const defaultTitle = '云吞';
+const defaultTitle = '云吞官网';
 const defaultDescription =
   '云吞教育科技有限公司线下主要产品是云吞自习室，致力于考研、考博、考证等能力提升证明的备考，提供安静、舒适的学习环境';
 const defaultSep = ' | ';

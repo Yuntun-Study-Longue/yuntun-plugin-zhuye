@@ -48,7 +48,7 @@ const ShopList = ({match, history}) => {
         '我的': match.path + '/mine',
     };
 
-    return <Page title={active + "列表"}>
+    return <Page title={active ? active + "列表" : ''}>
         <NavigatorBar variant="default">
             <ul className='button-list' onClick={(e) => {
                 e.stopPropagation()

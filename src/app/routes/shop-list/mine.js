@@ -50,7 +50,7 @@ InfoItem.defaultProps = { variant: 'default' }
 const Mine = ({ history, currentUser, isAuthenticated }) => {
     const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     useEffect(() => {
-        if (!isAuthenticated) setTimeout(() => history.push(`${REACT_APP_ROOT}/login`), 500);
+        if (!isAuthenticated) setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 50);
     }, [])
 
 return <GridLayout className="layout" layout={layout} cols={4} rowHeight={60} width={document.body.clientWidth}>
