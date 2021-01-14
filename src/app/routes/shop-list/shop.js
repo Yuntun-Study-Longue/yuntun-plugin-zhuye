@@ -42,17 +42,14 @@ const ShopItem = styled.div`
     .addr, .detail { margin-bottom: .5em; line-height: 18px; }
     .addr { ::before {content: "门店地址："}}
     .detail {::before {content: '简介：'}}
-    &.link-us { * {font-size: 32px;font-weight: bolder;}}
+    /* &.link-us { * {font-size: 32px;}} */
     .add {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
-    .lh, .ci, .ca {position: absolute; bottom: .5em; color: ${colors.ItemColor};font-size:8px;width: 100%; text-align: center;}
-    .ci { bottom: 4.5em;}
-    .ca { bottom: 2.5em;}
-    
-    
-
-    /* .container {
-        height: 100vh !important;
-    } */
+    .ci, .ca, .cp, .cb {position: absolute; bottom: .5em; color: ${colors.ItemColor};font-size:8px;width: 95%; text-align: left;}
+    .ci { bottom: 6.5em;}
+    .ca { bottom: 4.5em;}
+    .cp { bottom: 2.5em;}
+    .i-container { display: flex; justify-content: center; align-items: center;}
+    .lh {color: ${colors.ItemColor};font-size:8px; text-align: left; text-decoration: underline; bottom: }
 `
 ShopItem.defaultProps = { variant: 'default' }
 
@@ -112,9 +109,13 @@ const Shop = () => {
         }
         {shopItems.length ? <ShopItem className="link-us" key={''+ shopItems.length}>
             {/* <span className="add">「+」</span> */}
-            <p className="ci">云吞（北京）教育科技有限公司</p>
-            <p className="ca">北京市海淀区文慧园路6号1号楼3层A341室</p>
-            <a href="https://beian.miit.gov.cn" target="_blank"><span className="lh">京ICP备19017278号-1</span></a>
+            <div className='i-container'>
+                <p className="ci">云吞（北京）教育科技有限公司</p>
+                <p className="ca">北京市海淀区文慧园路6号1号楼3层A341室</p>
+                <p className="cp">联系我们：400-0670-996 、 400-0670-997</p>
+                <p className="cb">©2021 YUNTUN <a href="https://beian.miit.gov.cn" target="_blank"><span className="lh">京ICP备19017278号-1</span></a></p> 
+                
+            </div>
         </ShopItem> : <ShopItem key={data.length}></ShopItem>}
     </GridLayout>
 }

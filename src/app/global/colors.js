@@ -34,3 +34,6 @@ export const StickyHeaderBgColor = theme.variants('mode', 'variant', {
 export const CardBgColor = theme.variants('mode', 'variant', {
     default: { light: PureWhite, dark: PureWhite },
 });
+export const LoginTitleColor = theme.variants('mode', 'variant', {
+    default: { light: Illuminating, dark: PureWhite }
+})

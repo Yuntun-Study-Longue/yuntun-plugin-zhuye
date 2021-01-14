@@ -7,6 +7,7 @@ import Page from '../../components/page';
 import { loginUser } from '../../../modules/auth';
 import { REACT_APP_ROOT } from "../../constants";
 import sa from 'superagent';
+import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
 import "rc-message/assets/index.css"
@@ -20,28 +21,33 @@ const LoginGateWrap = styled.div`
 const LoginGate = styled.div`
   width: 320px;
   height: 240px;
-  background-color: rgb(147, 149, 151);
-  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 100px; text-align: right; ::after { content: ':'} }
-  input { display: block; padding: 0; color: #939597; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
-  input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
+  background-color: ${colors.UltimateGray};
+  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: ${colors.LoginTitleColor}; float: left; width: 100px; text-align: right; ::after { content: ':'} }
+  input { display: block; padding: 0; color: ${colors.UltimateGray}; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: ${colors.YueBai};}
+  input:-webkit-autofill, input:-internal-autofill-selected { color: ${colors.UltimateGray} !important };
 `
+LoginGate.defaultProps = { variant: 'default' }
 
 const WelcomeBanner = styled.div`
   height: 30%;
   text-align: center;
-  color: #F5DF4D;
+  color: ${colors.LoginTitleColor};
   font-weight: bold;
   padding-top: 10px;
 `
+WelcomeBanner.defaultProps = { variant: 'default' }
+
 const Button = styled.button`
   margin: 20px 0 0 0;
-  color: #939597;
-  background-color: #F5DF4D;
+  color: ${colors.btnColor};
+  background-color: ${colors.btnBgColor};
   border: none;
   outline: none;
   width: 120px;
   height: 40px;
 `;
+Button.defaultProps = { variant: 'default' }
+
 const SubmitBtn = styled(Button)`
   transform: translateX(20%);
   float: left;

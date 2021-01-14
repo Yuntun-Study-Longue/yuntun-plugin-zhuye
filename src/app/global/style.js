@@ -59,11 +59,11 @@ article {
     line-height: 1.4;
 	text-align: center;
 	* { text-align: left; }
-	h1 { margin-top: 1em; margin-bottom: .5em; font-weight: 700; font-size: 24px !important; text-align: center; }
-	h2,h3 { margin-top: 1em; margin-bottom: .5em; font-weight: 300; font-size: 16px; font-weight: bold;}
+	h1 { margin-top: 1em; margin-bottom: .5em; font-weight: 700; font-size: 16px !important; text-align: center; }
+	h2,h3 { margin-top: 1em; margin-bottom: .5em; font-weight: 300; font-size: 12px; font-weight: bold;}
 	h2 {text-indent:0; font-size: 12px !important;font-weight: 200; line-height: 16px; margin: .5em 0;}
 
-	p { margin-top: 0; margin-bottom: .5em; font-size: 14px; text-indent: 1em;}
+	p { margin-top: 0; margin-bottom: .5em; margin-left: .5em; margin-right: .5em; font-size: 12px; text-indent: 1em;}
 	img { width: 90%; }
 	a {
 		background-image: linear-gradient(#449, #449);
@@ -76,6 +76,6 @@ article {
 		transition: 0.15s;
 	}
 	code, pre, samp, var { font-size: 95%; font-family: "Roboto Mono", monospace; font-weight: 300; }
-	blockquote { margin:0; padding: .2em 1em; font-size: .8em; font-style: bold; line-height: 2; p {text-align:center;padding: 0;margin:0;} h2 {text-align: center;} }
+	blockquote { margin:0; padding: .2em .5em; font-size: 12px; font-style: bold; line-height: 2; p {text-align:center;padding: 0;margin:0;} h2 {text-align: left;text-decoration: underline; font-style: italic; margin: 0 1em;} }
 }
 `

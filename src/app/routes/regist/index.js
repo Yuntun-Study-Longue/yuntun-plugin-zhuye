@@ -6,6 +6,7 @@ import { createForm } from 'rc-form';
 import Page from '../../components/page';
 import { REACT_APP_ROOT } from "../../constants";
 import sa from 'superagent';
+import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
 import "rc-message/assets/index.css"
@@ -20,31 +21,36 @@ const RegistGate = styled.div`
   position: relative;
   width: 320px;
   height: 380px;
-  background-color: rgb(147, 149, 151);
-  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: rgb(245, 223, 77); float: left; width: 100px; text-align: right; ::after { content: ':'} }
+  background-color: ${colors.UltimateGray};
+  label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: ${colors.LoginTitleColor}; float: left; width: 100px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: #939597; width: 145px; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
   input:-webkit-autofill, input:-internal-autofill-selected { color: #939597 !important };
   input[id='code'] { width: 80px; float: left; }
   input[id='rule'] { float: left; width: auto; outline: none; ::before { background: #000; }; margin-right: 5px;}
 `
+RegistGate.defaultProps = { variant: 'default' }
 
 const WelcomeBanner = styled.div`
   height: 20%;
   text-align: center;
-  color: #F5DF4D;
+  color: ${colors.LoginTitleColor};
   font-weight: bold;
   padding-top: 10px;
 `
+WelcomeBanner.defaultProps = { variant: 'default' }
+
 const Button = styled.button`
   margin: 20px 0 0 0;
-  color: #939597;
-  background-color: #F5DF4D;
+  color: ${colors.btnColor};
+  background-color: ${colors.btnBgColor};
   border: none;
   outline: none;
   width: 120px;
   height: 40px;
 `;
+Button.defaultProps = { variant: 'default' }
+
 const SubmitBtn = styled(Button)`
   transform: translateX(-20%);
   float: right;
@@ -67,10 +73,12 @@ const SmsCodeBtn = styled.button`
     width: 65px;
     height: 24px; 
     font-size: 12px;
-    background-color: #F5DF4D;
-    color: #939597;
+    background-color: ${colors.btnBgColor};
+    color: ${colors.btnColor};
     padding: 0;
 `
+SmsCodeBtn.defaultProps = { variant: 'default' }
+
 const RegistRule = styled.div`
   display: flex;
   text-align: center;
@@ -78,8 +86,10 @@ const RegistRule = styled.div`
   align-items: center;
   input, label { margin: 0 }
   label { width: auto; margin-left: 5px; ::after { content: ''} }
-  label a { color: #F5DF4D }
+  label a { color: ${colors.LoginTitleColor} }
 `
+RegistRule.defaultProps = { variant: 'default' }
+
 const RuleList = styled.ul`
   width: 45%;
   margin: 0 auto;
@@ -88,12 +98,13 @@ const RuleList = styled.ul`
     font-weight: bold;
     margin: 5px 0;
     text-decoration: underline;
-    color: #F5DF4D;
-    a { color: #F5DF4D; }
+    color: ${colors.LoginTitleColor};
+    a { color: ${colors.LoginTitleColor}; }
     ::before { content: '《' }
     ::after { content: '》' }
   }
 `
+RuleList.defaultProps = { variant: 'default' }
 
 const Regist = props => {
   const { getFieldProps, validateFields } = props.form;
