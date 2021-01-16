@@ -21,7 +21,7 @@ const RegistGate = styled.div`
   position: relative;
   width: 320px;
   height: 380px;
-  background-color: ${colors.UltimateGray};
+  background-color: ${colors.UltimateGrayFn(.6)};
   label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: ${colors.LoginTitleColor}; float: left; width: 100px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: #939597; width: 145px; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: rgb(214, 236, 240);}
   input::-webkit-textfield-decoration-container { background-color: rgb(214, 236, 240); }
@@ -106,6 +106,13 @@ const RuleList = styled.ul`
 `
 RuleList.defaultProps = { variant: 'default' }
 
+const XinJieWrap = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url('http://yuntun-web.oss-cn-beijing.aliyuncs.com/2e3aef5c524ee3949956600bf6881d44') no-repeat fixed center;
+`
+
 const Regist = props => {
   const { getFieldProps, validateFields } = props.form;
   let [countdown, setCount] = useState(0);
@@ -149,56 +156,58 @@ const Regist = props => {
   }
   
   return <Page title="注册页面">
-    <RegistGateWrap>
-      <RegistGate>
-        <BackBtn onClick={() => props.history.goBack()}>返回</BackBtn>
-        <WelcomeBanner>注册页面</WelcomeBanner>
-        <form>
-          <label htmlFor="phone">手机号</label>
-          <input id='phone' type='tel' placeholder="手机号" autoComplete="off"
-          {...getFieldProps('phone', {
-            initialValue: '',
-            rules: [{required: true }]
-          })} />
-          <br/>
-          <label htmlFor="code">验证码</label>
-          <input id='code' type='number' placeholder="验证码" autoComplete="off"
-          {...getFieldProps('code', {
-            initialValue: '',
-            rules: [{required: true }]
-          })} />
-          <SmsCodeBtn disabled={countdown} onClick={requestCode.bind(this)}>{ countdown || '获取验证码' }</SmsCodeBtn>
-          <br/>
-          <br/>
-          <label htmlFor="passwd">新密码</label>
-          <input id='passwd' type='password' placeholder="请输入新密码" autoComplete="new-password"
-          {...getFieldProps('new_passwd', {
-            initialValue: '',
-            rules: [{ required: true, }]
-          })} />
-          <br/>
-          <label htmlFor="passwd">密码</label>
-          <input id='passwd' type='password' placeholder="请重复输入密码" autoComplete="password"
-          {...getFieldProps('repeat_passwd', {
-            initialValue: '',
-            rules: [{ required: true, }]
-          })} />
-          <br/>
-          <RegistRule>
-            <label>
-              <input id="rule" type='checkbox' />
-              <span></span>
-              我已阅读并同意以下条款
-            </label>
-          </RegistRule>
-          <RuleList>
-            <li><a target='_blank' href={`${REACT_APP_ROOT}/policy`}>云吞自习室注册协议</a></li>
-          </RuleList>
-        </form>
-        <ResetBtn onClick={() => props.form.resetFields()}>重置</ResetBtn>
-        <SubmitBtn onClick={submit.bind(this)}>确定</SubmitBtn>
-      </RegistGate>
-    </RegistGateWrap>
+    <XinJieWrap>
+      <RegistGateWrap>
+        <RegistGate>
+          <BackBtn onClick={() => props.history.goBack()}>返回</BackBtn>
+          <WelcomeBanner>注册页面</WelcomeBanner>
+          <form>
+            <label htmlFor="phone">手机号</label>
+            <input id='phone' type='tel' placeholder="手机号" autoComplete="off"
+            {...getFieldProps('phone', {
+              initialValue: '',
+              rules: [{required: true }]
+            })} />
+            <br/>
+            <label htmlFor="code">验证码</label>
+            <input id='code' type='number' placeholder="验证码" autoComplete="off"
+            {...getFieldProps('code', {
+              initialValue: '',
+              rules: [{required: true }]
+            })} />
+            <SmsCodeBtn disabled={countdown} onClick={requestCode.bind(this)}>{ countdown || '获取验证码' }</SmsCodeBtn>
+            <br/>
+            <br/>
+            <label htmlFor="passwd">新密码</label>
+            <input id='passwd' type='password' placeholder="请输入新密码" autoComplete="new-password"
+            {...getFieldProps('new_passwd', {
+              initialValue: '',
+              rules: [{ required: true, }]
+            })} />
+            <br/>
+            <label htmlFor="passwd">密码</label>
+            <input id='passwd' type='password' placeholder="请重复输入密码" autoComplete="password"
+            {...getFieldProps('repeat_passwd', {
+              initialValue: '',
+              rules: [{ required: true, }]
+            })} />
+            <br/>
+            <RegistRule>
+              <label>
+                <input id="rule" type='checkbox' />
+                <span></span>
+                我已阅读并同意以下条款
+              </label>
+            </RegistRule>
+            <RuleList>
+              <li><a target='_blank' href={`${REACT_APP_ROOT}/policy`}>云吞自习室注册协议</a></li>
+            </RuleList>
+          </form>
+          <ResetBtn onClick={() => props.form.resetFields()}>重置</ResetBtn>
+          <SubmitBtn onClick={submit.bind(this)}>确定</SubmitBtn>
+        </RegistGate>
+      </RegistGateWrap>
+    </XinJieWrap>
   </Page>
 }
 

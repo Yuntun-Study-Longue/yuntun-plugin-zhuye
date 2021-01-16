@@ -21,7 +21,7 @@ const LoginGateWrap = styled.div`
 const LoginGate = styled.div`
   width: 320px;
   height: 240px;
-  background-color: ${colors.UltimateGray};
+  background-color: ${colors.UltimateGrayFn(.6)};
   label { margin-right: 1em; font-size: 12px; font-weight: bold ;height: 24px; line-height: 24px; color: ${colors.LoginTitleColor}; float: left; width: 100px; text-align: right; ::after { content: ':'} }
   input { display: block; padding: 0; color: ${colors.UltimateGray}; height: 24px; outline: none; border: none; padding: 0 0 0 1em; background-color: ${colors.YueBai};}
   input:-webkit-autofill, input:-internal-autofill-selected { color: ${colors.UltimateGray} !important };
@@ -56,6 +56,12 @@ const RegistBtn = styled(Button)`
   transform: translateX(-20%);
   float: right;
 `
+const XinJieWrap = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url('http://yuntun-web.oss-cn-beijing.aliyuncs.com/2e3aef5c524ee3949956600bf6881d44') no-repeat fixed center;
+`
 
 const Login = props => {
   const { getFieldProps, validateFields } = props.form;
@@ -73,28 +79,30 @@ const Login = props => {
     })
   });
   return <Page title="登录页面">
-    <LoginGateWrap>
-      <LoginGate>
-        <WelcomeBanner>登录页面</WelcomeBanner>
-        <form>
-          <label htmlFor="phone">请输入手机号</label>
-          <input id='phone' type='text' placeholder="手机号" autoComplete="off"
-          {...getFieldProps('phone', {
-            initialValue: '',
-            rules: [{required: true }]
-          })} />
-          <br/>
-          <label htmlFor="passwd">请输入密码</label>
-          <input id='passwd' type='password' placeholder="密码" autoComplete="new-password"
-          {...getFieldProps('passwd', {
-            initialValue: '',
-            rules: [{ required: true, }]
-          })} />
-        </form>
-        <SubmitBtn onClick={submit}>登录</SubmitBtn>
-        <RegistBtn onClick={() => props.history.push(`${REACT_APP_ROOT}/regist`)}>注册</RegistBtn>
-      </LoginGate>
-    </LoginGateWrap>
+    <XinJieWrap>
+      <LoginGateWrap>
+        <LoginGate>
+          <WelcomeBanner>登录页面</WelcomeBanner>
+          <form>
+            <label htmlFor="phone">请输入手机号</label>
+            <input id='phone' type='text' placeholder="手机号" autoComplete="off"
+            {...getFieldProps('phone', {
+              initialValue: '',
+              rules: [{required: true }]
+            })} />
+            <br/>
+            <label htmlFor="passwd">请输入密码</label>
+            <input id='passwd' type='password' placeholder="密码" autoComplete="new-password"
+            {...getFieldProps('passwd', {
+              initialValue: '',
+              rules: [{ required: true, }]
+            })} />
+          </form>
+          <SubmitBtn onClick={submit}>登录</SubmitBtn>
+          <RegistBtn onClick={() => props.history.push(`${REACT_APP_ROOT}/regist`)}>注册</RegistBtn>
+        </LoginGate>
+      </LoginGateWrap>
+    </XinJieWrap>
   </Page>
 }
 

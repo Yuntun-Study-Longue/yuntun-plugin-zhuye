@@ -2,6 +2,7 @@ import theme from "styled-theming";
 
 export const Illuminating = '#F5DF4D'
 export const UltimateGray = '#939597'
+export const UltimateGrayFn = (opacity) => `rgba(130,149,154, ${opacity})`
 export const YueBai = 'rgb(214, 236, 240)'
 export const Dousha = 'rgb(131, 175, 155)'
 export const PureWhite = '#fff'
