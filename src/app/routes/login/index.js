@@ -60,7 +60,7 @@ const XinJieWrap = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: url('http://yuntun-web.oss-cn-beijing.aliyuncs.com/2e3aef5c524ee3949956600bf6881d44') no-repeat fixed center;
+  background: url('https://yuntun-web.oss-cn-beijing.aliyuncs.com/2e3aef5c524ee3949956600bf6881d44') no-repeat fixed center;
 `
 
 const Login = props => {

@@ -1,4 +1,6 @@
 import Cookies from 'js-cookie';
+import * as tool from "luna-utils";
+import sa from 'superagent';
 
 export const AUTHENTICATE = 'auth/AUTHENTICATE';
 export const SET_CURRENT_USER = 'auth/SET_CURRENT_USER';
@@ -52,6 +54,15 @@ export const establishCurrentUser = () => dispatch =>
       dispatch(setCurrentUser(userFromCookie));
       resolve(userFromCookie);
     } else {
+      // 判断所处的环境
+      if (tool.h5Env.isWX()) {
+        // 微信环境初始化，获取 OpenID
+        // import WechatJSSDK from 'wechat-jssdk';
+        sa.post('/webcore/base/wx_config').send({ web_url: window.location.href.split('#')[0] }).then(res => {
+          console.log(res.body, '=== body')
+        })
+      }
+
       resolve({});
     }
   });
