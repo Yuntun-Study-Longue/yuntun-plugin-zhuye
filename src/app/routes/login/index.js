@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from "styled-components";
@@ -64,6 +64,9 @@ const XinJieWrap = styled.div`
 `
 
 const Login = props => {
+  useEffect(() => {
+    console.log(props.wx, '=== ')
+  }, [])
   const { getFieldProps, validateFields } = props.form;
   const submit = () => validateFields((error, data) => {
     if (error) return
@@ -106,11 +109,15 @@ const Login = props => {
   </Page>
 }
 
+const mapStateToProps = state => ({
+  wx: state.auth.wx
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ loginUser }, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(
   createForm()(Login)
