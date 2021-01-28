@@ -84,7 +84,8 @@ export const establishCurrentUser = () => dispatch =>
             'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
           })
           wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
-            ...w, 
+            shareOnMoment: w.shareOnMoment.bind(w),
+            shareOnChat: w.shareOnChat.bind(w),
             wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
             wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
           }}) );

@@ -66,7 +66,6 @@ const XinJieWrap = styled.div`
 const Login = props => {
   useEffect(() => {
     if (!tool.systemUtils.isServer()) {
-      props.wx && console.log( props.wx.oauth, '=== wx.oauth' );
       props.wx && props.wx.shareOnMoment({
         type: 'link',
         title: '欢迎加入云吞自习室',
