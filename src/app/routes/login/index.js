@@ -65,8 +65,25 @@ const XinJieWrap = styled.div`
 
 const Login = props => {
   useEffect(() => {
-    console.log(props.wx, '=== ')
-  }, [])
+    if (!tool.systemUtils.isServer()) {
+      props.wx && console.log( props.wx.oauth, '=== wx.oauth' );
+      props.wx && props.wx.shareOnMoment({
+        type: 'link',
+        title: '欢迎加入云吞自习室',
+        link: window.location.href,
+        imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644'
+      });
+      props.wx && props.wx.shareOnChat({
+        type: 'link',
+        title: '欢迎加入云吞自习室',
+        link: window.location.href,
+        imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644',
+        desc: '农历新年邀请好友加入赢好礼相送！',
+        success: function (){},
+        cancel: function (){}
+      });
+    }
+  }, [props.wx])
   const { getFieldProps, validateFields } = props.form;
   const submit = () => validateFields((error, data) => {
     if (error) return

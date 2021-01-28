@@ -8,7 +8,8 @@ export const SET_WX_INSTANCE = 'auth/SET_WX_INSTANCE';
 
 const initialState = {
   wx: null,
-  isAuthenticated: false,
+  isAuthenticated: false, // 是否登录
+  isWxSubscribed: false, // 是否关注公众号
   currentUser: {}
 };
 
@@ -75,14 +76,18 @@ export const establishCurrentUser = () => dispatch =>
             'timestamp': res.body.timestamp,
             //below are optional
             //enable debug mode, same as debug
-            'debug': true,
+            'debug': false,
             'jsApiList': [
               'onMenuShareTimeline', 
               'onMenuShareAppMessage'
             ], //optional, pass all the jsapi you want, the default will be ['onMenuShareTimeline', 'onMenuShareAppMessage']
             'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
           })
-          wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: w }) );
+          wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
+            ...w, 
+            wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
+            wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
+          }}) );
         })
       }
 

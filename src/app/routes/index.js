@@ -38,6 +38,12 @@ const ShopList = Loadable({
   modules: ["shoplist"]
 });
 
+const OAuth = Loadable({
+  loader: () => import(/* webpackChunkName: "oauth" */ "./oauth-callback"),
+  loading: () => null,
+  modules: ["oauth"]
+})
+
 export default () => (
   <Switch>
     <Route exact path={REACT_APP_ROOT} component={Login} />
@@ -45,6 +51,7 @@ export default () => (
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/regist`} component={Regist} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/login`} component={Login} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/logout`} component={Logout} />
+    <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/oauth-callback`} component={OAuth} />
     <Route path={`${REACT_APP_ROOT}/shoplist`} component={ShopList} />
     <Route component={NotFound} />
   </Switch>
