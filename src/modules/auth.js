@@ -3,13 +3,16 @@ import * as tool from "luna-utils";
 import sa from 'superagent';
 
 export const AUTHENTICATE = 'auth/AUTHENTICATE';
+export const WXSUBSCRIBE = 'auth/WXSUBSCRIBE';
 export const SET_CURRENT_USER = 'auth/SET_CURRENT_USER';
 export const SET_WX_INSTANCE = 'auth/SET_WX_INSTANCE';
+export const SET_WX_OPENID = 'auth/SET_WX_OPENID';
 
 const initialState = {
   wx: null,
   isAuthenticated: false, // 是否登录
-  isWxSubscribed: false, // 是否关注公众号
+  openid: null,
+  isWxSubscribed: false, // 是否关注公众号 0: 未关注 | 1: 已关注
   currentUser: {}
 };
 
@@ -20,7 +23,11 @@ export default (state = initialState, action) => {
         ...state,
         isAuthenticated: action.authenticated
       };
-
+    case WXSUBSCRIBE:
+      return {
+        ...state,
+        isWxSubscribed: action.isWxSubscribed
+      };
     case SET_CURRENT_USER:
       return {
         ...state,
@@ -30,6 +37,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         wx: action.wx
+      };
+    case SET_WX_OPENID:
+      return {
+        ...state,
+        openid: action.openid
       }
 
     default:
@@ -54,6 +66,31 @@ export const setCurrentUser = user => dispatch =>
     resolve(user);
   });
 
+export const updateCurrentUser = user => dispatch =>
+  new Promise(resolve => {
+    let userFromCookie = Cookies.getJSON('yuntun-website');
+    let updateData = userFromCookie;
+
+    if (userFromCookie && user) {
+      updateData = {
+        ...userFromCookie,
+        unionid: user.unionid,
+        h5_openid: user.openid,
+        avatar: userFromCookie.avatar || user.headimgurl,
+        is_wx_subscribed: user.subscribe,
+      }
+      Cookies.remove('yuntun-website')
+      dispatch(setCurrentUser(updateData));
+
+      dispatch({
+        type: WXSUBSCRIBE,
+        isWxSubscribed: user.subscribe === 1,
+      })
+    }
+
+    resolve(updateData);
+  })
+
 export const establishCurrentUser = () => dispatch =>
   new Promise(resolve => {
     let userFromCookie = Cookies.getJSON('yuntun-website');
@@ -64,8 +101,13 @@ export const establishCurrentUser = () => dispatch =>
     } else {
       // 判断所处的环境
       if (tool.h5Env.isWX()) {
+        // 微信环境从缓存获取 openid，避免多次授权
+        let openidFromCookie = Cookies.get('openid');
+        openidFromCookie && dispatch(setOpenID(openidFromCookie));
+
         // 微信环境初始化，获取 OpenID
         const WechatJSSDK = require('wechat-jssdk')
+        // 微信jssdk config配置
         sa.post('/webcore/wx/base/wx9b261f80ad7c8c47/wx_config').send({ web_url: window.location.href.split('#')[0] }).then(res => {
           const wx = new WechatJSSDK({
             //below are mandatory options to finish the wechat signature verification
@@ -88,6 +130,8 @@ export const establishCurrentUser = () => dispatch =>
             shareOnChat: w.shareOnChat.bind(w),
             wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
             wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
+            wxFetchBaseInfo: tool.authorizeUtils.wxFetchBaseInfo,
+            wxFetchUserInfoByOpenID: tool.authorizeUtils.wxFetchUserInfoByOpenID,
           }}) );
         })
       }
@@ -96,11 +140,26 @@ export const establishCurrentUser = () => dispatch =>
     }
   });
 
+export const setOpenID = openid => dispatch =>
+  new Promise(resolve => {
+    dispatch({
+      type: SET_WX_OPENID,
+      openid
+    });
+
+    Cookies.set('openid', openid, { expires: 7 });
+    resolve(openid);
+  })
+
 export const loginUser = (user) => dispatch =>
   new Promise((resolve, reject) => {
-
-    dispatch(setCurrentUser(user));
-    resolve(user);
+    let userinfo = user;
+    if (tool.h5Env.isWX()) {
+      let openidFromCookie = Cookies.get('openid');
+      userinfo = openidFromCookie ? { ...user, openid: openidFromCookie } : user;
+    }
+    dispatch(setCurrentUser(userinfo));
+    resolve(userinfo);
   });
 
 export const logoutUser = () => dispatch =>

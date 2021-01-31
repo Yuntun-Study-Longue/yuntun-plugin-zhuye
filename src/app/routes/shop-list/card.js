@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setOpenID } from '../../../modules/auth';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import styled from 'styled-components';
 import * as colors from '../../global/colors';
@@ -53,7 +56,7 @@ const PurchaseBtn = styled.button`
 `
 PurchaseBtn.defaultProps = { variant: 'default' }
 
-const Card = () => {
+const Card = props => {
     const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     const layouts = getLayoutsFromSomewhere();
     const [cardItems, setCardItems] = useState([]);
@@ -63,6 +66,12 @@ const Card = () => {
     const [selectedShop, setSelectedShop] = useState(null);
     const [selectedDesk, setSelectedDesk] = useState(null);
     useEffect(() => {
+        // 微信环境静默授权，获取 openid
+        if (tool.h5Env.isWX() && props.wx && !props.openid) {
+            props.wx.wxFetchBaseInfo().then( res => {
+                props.setOpenID(res.openid)
+            })
+        }
         sa.get('/data/card.json?t='+ new Date().getTime()).then(res => setCardItems(res.body))
         sa.get('/data/price.json?t='+ new Date().getTime()).then(res => {
             console.log(res.body)
@@ -71,7 +80,7 @@ const Card = () => {
             setDeskItems(res.body);
         })
         return
-    }, []);
+    }, [props.wx]);
     const handleSelectShop = (shop) => {
         const DeskTypes = DeskItems[shop.value].map(item => item.name);
         selectedDesk && shop !== selectedShop && !DeskTypes.includes(selectedDesk.value) && setSelectedDesk(null);
@@ -108,4 +117,16 @@ const Card = () => {
     )
 }
 
-export default Card
+const mapStateToProps = state => ({
+    wx: state.auth.wx,
+    openid: state.auth.openid,
+});
+
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({ setOpenID }, dispatch);
+  
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Card)

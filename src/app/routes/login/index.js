@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styled from "styled-components";
 import { createForm } from 'rc-form';
 import Page from '../../components/page';
-import { loginUser } from '../../../modules/auth';
+import { loginUser, setOpenID, updateCurrentUser } from '../../../modules/auth';
 import { REACT_APP_ROOT } from "../../constants";
 import sa from 'superagent';
 import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
+import Cookies from 'js-cookie';
 import "rc-message/assets/index.css"
 
 const LoginGateWrap = styled.div`
@@ -64,6 +65,17 @@ const XinJieWrap = styled.div`
 `
 
 const Login = props => {
+  const [wxuser, setUser] = useState(null);
+  useEffect(() => {
+    // 微信环境根据 openid 搜索微信用户信息
+    if (tool.h5Env.isWX() && props.wx && props.openid){
+      props.wx.wxFetchUserInfoByOpenID(props.openid).then( userinfo => {
+        setUser(userinfo);
+        props.updateCurrentUser(userinfo);
+      })
+    }
+  }, [props.openid])
+
   useEffect(() => {
     if (!tool.systemUtils.isServer()) {
       props.wx && props.wx.shareOnMoment({
@@ -81,13 +93,27 @@ const Login = props => {
         success: function (){},
         cancel: function (){}
       });
+      // 微信环境静默授权，获取 openid
+      if (tool.h5Env.isWX() && props.wx && !props.openid) {
+        props.wx.wxFetchBaseInfo().then( res => {
+          props.setOpenID(res.openid)
+        })
+      } 
     }
   }, [props.wx])
   const { getFieldProps, validateFields } = props.form;
   const submit = () => validateFields((error, data) => {
     if (error) return
     tool.deviceUtils.generateSid(data.phone).then(sid => {
-      sa.get('/webcore/auth/base/yuntun/login', {...data, sid }).then(res => {
+      let submitData = {...data, sid };
+      if (wxuser) {
+        submitData = {
+          ...submitData,
+          unionid: wxuser.unionid,
+          h5_openid: wxuser.openid,
+        }
+      }
+      sa.get('/webcore/auth/base/yuntun/login', submitData).then(res => {
         const { code, msg, data } = res.body;
         if (!code) {
           props.loginUser(data)
@@ -126,11 +152,13 @@ const Login = props => {
 }
 
 const mapStateToProps = state => ({
-  wx: state.auth.wx
+  wx: state.auth.wx,
+  openid: state.auth.openid,
+  isWxSubscribed: state.auth.isWxSubscribed,
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loginUser }, dispatch);
+  bindActionCreators({ loginUser, setOpenID, updateCurrentUser }, dispatch);
 
 export default connect(
   mapStateToProps,

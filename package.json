@@ -16,7 +16,8 @@
     "publish:full": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm publish && npm run oss",
     "publish:simple": "npm publish",
     "publish:local": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm run oss",
-    "preinstall": "npm cache clean --force"
+    "preinstall": "npm cache clean --force",
+    "prepublish:local": "npm link luna-utils"
   },
   "browserslist": [
     ">0.2%",
@@ -75,7 +76,7 @@
     "superagent": "^6.1.0"
   },
   "dependencies": {
-    "luna-utils": "^1.0.4",
+    "luna-utils": "^1.0.6",
     "marked": "^1.2.7",
     "npm": "^6.14.10",
     "rc-form": "^2.4.11",
