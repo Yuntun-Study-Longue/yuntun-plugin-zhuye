@@ -65,17 +65,6 @@ const XinJieWrap = styled.div`
 `
 
 const Login = props => {
-  const [wxuser, setUser] = useState(null);
-  useEffect(() => {
-    // 微信环境根据 openid 搜索微信用户信息
-    if (tool.h5Env.isWX() && props.wx && props.openid){
-      props.wx.wxFetchUserInfoByOpenID(props.openid).then( userinfo => {
-        setUser(userinfo);
-        props.updateCurrentUser(userinfo);
-      })
-    }
-  }, [props.openid])
-
   useEffect(() => {
     if (!tool.systemUtils.isServer()) {
       props.wx && props.wx.shareOnMoment({
@@ -105,15 +94,7 @@ const Login = props => {
   const submit = () => validateFields((error, data) => {
     if (error) return
     tool.deviceUtils.generateSid(data.phone).then(sid => {
-      let submitData = {...data, sid };
-      if (wxuser) {
-        submitData = {
-          ...submitData,
-          unionid: wxuser.unionid,
-          h5_openid: wxuser.openid,
-        }
-      }
-      sa.get('/webcore/auth/base/yuntun/login', submitData).then(res => {
+      sa.get('/webcore/auth/base/yuntun/login', {...data, sid }).then(res => {
         const { code, msg, data } = res.body;
         if (!code) {
           props.loginUser(data)

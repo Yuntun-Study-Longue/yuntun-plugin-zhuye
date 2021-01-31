@@ -66,78 +66,67 @@ export const setCurrentUser = user => dispatch =>
     resolve(user);
   });
 
-export const updateCurrentUser = user => dispatch =>
-  new Promise(resolve => {
-    let userFromCookie = Cookies.getJSON('yuntun-website');
-    let updateData = userFromCookie;
-
-    if (userFromCookie && user) {
-      updateData = {
-        ...userFromCookie,
-        unionid: user.unionid,
-        h5_openid: user.openid,
-        avatar: userFromCookie.avatar || user.headimgurl,
-        is_wx_subscribed: user.subscribe,
-      }
-      Cookies.remove('yuntun-website')
-      dispatch(setCurrentUser(updateData));
-
-      dispatch({
-        type: WXSUBSCRIBE,
-        isWxSubscribed: user.subscribe === 1,
-      })
-    }
-
-    resolve(updateData);
-  })
-
 export const establishCurrentUser = () => dispatch =>
   new Promise(resolve => {
     let userFromCookie = Cookies.getJSON('yuntun-website');
 
-    if (userFromCookie) {
-      dispatch(setCurrentUser(userFromCookie));
-      resolve(userFromCookie);
-    } else {
-      // 判断所处的环境
-      if (tool.h5Env.isWX()) {
-        // 微信环境从缓存获取 openid，避免多次授权
-        let openidFromCookie = Cookies.get('openid');
-        openidFromCookie && dispatch(setOpenID(openidFromCookie));
+    // 如果是微信环境, 初始化config信息 + 微信用户信息 + 系统用户信息
+    if (tool.h5Env.isWX()) {
+      // 微信环境从缓存获取 openid，避免多次授权
+      let openidFromCookie = Cookies.get('openid');
+      if (openidFromCookie) {
+        dispatch(setOpenID(openidFromCookie));
+        tool.authorizeUtils.wxFetchUserInfoByOpenID(openidFromCookie).then( userinfo => {
+          dispatch(setCurrentUser({
+            ...userFromCookie,
+            unionid: userinfo.unionid,
+            h5_openid: userinfo.openid,
+            avatar: !userFromCookie.avatar ? userinfo.headimgurl : userFromCookie.avatar,
+          }));
 
-        // 微信环境初始化，获取 OpenID
-        const WechatJSSDK = require('wechat-jssdk')
-        // 微信jssdk config配置
-        sa.post('/webcore/wx/base/wx9b261f80ad7c8c47/wx_config').send({ web_url: window.location.href.split('#')[0] }).then(res => {
-          const wx = new WechatJSSDK({
-            //below are mandatory options to finish the wechat signature verification
-            //the 4 options below should be received like api '/get-signature' above
-            'appId': res.body.appid,
-            'nonceStr': res.body.noncestr,
-            'signature': res.body.signature,
-            'timestamp': res.body.timestamp,
-            //below are optional
-            //enable debug mode, same as debug
-            'debug': false,
-            'jsApiList': [
-              'onMenuShareTimeline', 
-              'onMenuShareAppMessage'
-            ], //optional, pass all the jsapi you want, the default will be ['onMenuShareTimeline', 'onMenuShareAppMessage']
-            'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
-          })
-          wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
-            shareOnMoment: w.shareOnMoment.bind(w),
-            shareOnChat: w.shareOnChat.bind(w),
-            wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
-            wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
-            wxFetchBaseInfo: tool.authorizeUtils.wxFetchBaseInfo,
-            wxFetchUserInfoByOpenID: tool.authorizeUtils.wxFetchUserInfoByOpenID,
-          }}) );
+          dispatch({
+            type: WXSUBSCRIBE,
+            isWxSubscribed: userinfo.subscribe === 1
+          });
         })
       }
 
-      resolve({});
+      // 微信环境初始化，获取 OpenID
+      const WechatJSSDK = require('wechat-jssdk')
+      // 微信jssdk config配置
+      sa.post('/webcore/wx/base/wx9b261f80ad7c8c47/wx_config').send({ web_url: window.location.href.split('#')[0] }).then(res => {
+        const wx = new WechatJSSDK({
+          //below are mandatory options to finish the wechat signature verification
+          //the 4 options below should be received like api '/get-signature' above
+          'appId': res.body.appid,
+          'nonceStr': res.body.noncestr,
+          'signature': res.body.signature,
+          'timestamp': res.body.timestamp,
+          //below are optional
+          //enable debug mode, same as debug
+          'debug': false,
+          'jsApiList': [
+            'onMenuShareTimeline', 
+            'onMenuShareAppMessage'
+          ], //optional, pass all the jsapi you want, the default will be ['onMenuShareTimeline', 'onMenuShareAppMessage']
+          'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
+        })
+        wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
+          shareOnMoment: w.shareOnMoment.bind(w),
+          shareOnChat: w.shareOnChat.bind(w),
+          wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
+          wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
+          wxFetchBaseInfo: tool.authorizeUtils.wxFetchBaseInfo,
+          wxFetchUserInfoByOpenID: tool.authorizeUtils.wxFetchUserInfoByOpenID,
+        }}) );
+      })
     }
+    else if (userFromCookie) {
+      dispatch(setCurrentUser(userFromCookie));
+      resolve(userFromCookie);
+    }
+
+    resolve({});
   });
 
 export const setOpenID = openid => dispatch =>
