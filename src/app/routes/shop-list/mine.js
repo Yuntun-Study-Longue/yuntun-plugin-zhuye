@@ -47,11 +47,29 @@ const InfoItem = styled.div`
 `
 InfoItem.defaultProps = { variant: 'default' }
 
-const Mine = ({ history, currentUser, isAuthenticated }) => {
+const Mine = ({ history, currentUser, wx }) => {
     const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     useEffect(() => {
-        if (!isAuthenticated) setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 50);
-    }, [])
+        if (!tool.systemUtils.isServer()) {
+            wx && wx.shareOnMoment({
+              type: 'link',
+              title: '欢迎加入云吞自习室',
+              link: window.location.href,
+              imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644'
+            });
+            wx && wx.shareOnChat({
+              type: 'link',
+              title: '欢迎加入云吞自习室',
+              link: window.location.href,
+              imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644',
+              desc: '农历新年邀请好友加入赢好礼相送！',
+              success: function (){},
+              cancel: function (){}
+            });
+        }
+
+        if (!currentUser) setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 0);
+    }, [wx])
 
 return <GridLayout className="layout" layout={layout} cols={4} rowHeight={60} width={document.body.clientWidth}>
         <InfoItem key='card' className="card">
@@ -94,6 +112,7 @@ return <GridLayout className="layout" layout={layout} cols={4} rowHeight={60} wi
     </GridLayout>
 }
 const mapStateToProps = state => ({
+    wx: state.auth.wx,
     isAuthenticated: state.auth.isAuthenticated,
     currentUser: state.auth.currentUser
 });

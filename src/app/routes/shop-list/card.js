@@ -66,12 +66,31 @@ const Card = props => {
     const [selectedShop, setSelectedShop] = useState(null);
     const [selectedDesk, setSelectedDesk] = useState(null);
     useEffect(() => {
+        if (!tool.systemUtils.isServer()) {
+            props.wx && props.wx.shareOnMoment({
+              type: 'link',
+              title: '云吞自习室收费标准',
+              link: window.location.href,
+              imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644'
+            });
+            props.wx && props.wx.shareOnChat({
+              type: 'link',
+              title: '云吞自习室收费标准',
+              link: window.location.href,
+              imgUrl: 'https://yuntun-web.oss-cn-beijing.aliyuncs.com/49d691adb21dad12cbf70090af1f3644',
+              desc: '请进入页面后选择门店和桌型',
+              success: function (){},
+              cancel: function (){}
+            });
+        }
+
         // 微信环境静默授权，获取 openid
         if (tool.h5Env.isWX() && props.wx && !props.openid) {
             props.wx.wxFetchBaseInfo().then( res => {
                 props.setOpenID(res.openid)
             })
         }
+
         sa.get('/data/card.json?t='+ new Date().getTime()).then(res => setCardItems(res.body))
         sa.get('/data/price.json?t='+ new Date().getTime()).then(res => {
             console.log(res.body)
