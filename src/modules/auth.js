@@ -80,7 +80,6 @@ export const establishCurrentUser = () => dispatch =>
           dispatch(setCurrentUser({
             ...userFromCookie,
             unionid: userinfo.unionid,
-            h5_openid: userinfo.openid,
             avatar: !userFromCookie.avatar ? userinfo.headimgurl : userFromCookie.avatar,
           }));
 

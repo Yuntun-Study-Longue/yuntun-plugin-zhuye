@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import styled from "styled-components";
 import { createForm } from 'rc-form';
 import Page from '../../components/page';
-import { loginUser, setOpenID, updateCurrentUser } from '../../../modules/auth';
+import { loginUser, setOpenID } from '../../../modules/auth';
 import { REACT_APP_ROOT } from "../../constants";
 import sa from 'superagent';
 import * as colors from '../../global/colors';
@@ -139,7 +139,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loginUser, setOpenID, updateCurrentUser }, dispatch);
+  bindActionCreators({ loginUser, setOpenID }, dispatch);
 
 export default connect(
   mapStateToProps,
