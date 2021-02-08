@@ -1,7 +1,7 @@
 {
   "name": "yuntun-plugin-zhuye",
   "homepage": "https://images.yuntun-bj.com",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "index.js",
   "private": false,
   "scripts": {
