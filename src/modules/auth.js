@@ -93,7 +93,7 @@ export const establishCurrentUser = () => dispatch =>
       // 微信环境初始化，获取 OpenID
       const WechatJSSDK = require('wechat-jssdk')
       // 微信jssdk config配置
-      sa.post('/webcore/wx/base/wx9b261f80ad7c8c47/wx_config').send({ web_url: window.location.href.split('#')[0] }).then(res => {
+      sa.post(`${tool.domainUtils.getHost()}/webcore/wx/base/wx9b261f80ad7c8c47/wx_config`).send({ web_url: window.location.href.split('#')[0] }).then(res => {
         const wx = new WechatJSSDK({
           //below are mandatory options to finish the wechat signature verification
           //the 4 options below should be received like api '/get-signature' above
