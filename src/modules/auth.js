@@ -74,13 +74,13 @@ export const establishCurrentUser = () => dispatch =>
     if (tool.h5Env.isWX()) {
       // 微信环境从缓存获取 openid，避免多次授权
       let openidFromCookie = Cookies.get('openid');
-      if (openidFromCookie) {
+      if (openidFromCookie ) {
         dispatch(setOpenID(openidFromCookie));
         tool.authorizeUtils.wxFetchUserInfoByOpenID(openidFromCookie).then( userinfo => {
           dispatch(setCurrentUser({
             ...userFromCookie,
             unionid: userinfo.unionid,
-            avatar: !userFromCookie.avatar ? userinfo.headimgurl : userFromCookie.avatar,
+            avatar: !userFromCookie ? userinfo.headimgurl : userFromCookie.avatar,
           }));
 
           dispatch({

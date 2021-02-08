@@ -2,26 +2,41 @@
     {
         "name": "月卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/k3LX1WELiTrI3TN62DwncB4rbgXbKGON9T3rLIt9u3SNUpgsQGxMJeBFODB2xFqw?media-id=k3LX1WELiTrI3TN62DwncB4rbgXbKGON9T3rLIt9u3SNUpgsQGxMJeBFODB2xFqw&appid=wx678687fa5226e237",
+        "standards": 30,
+        "unit": "日",
+        "type": "continuous",
         "description": ""
     },
     {
         "name": "季卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/afmkZ4HcUS9-JKJeJl_veMU-fTyqzzMg4utDM4keX4Yi6q8ZoTJOQexlFG0Zpuvg?media-id=afmkZ4HcUS9-JKJeJl_veMU-fTyqzzMg4utDM4keX4Yi6q8ZoTJOQexlFG0Zpuvg&appid=wx678687fa5226e237",
+        "standards": 3,
+        "unit": "月",
+        "type": "continuous",
         "description": ""
     },
     {
         "name": "30次卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/44A3ioBmRBAF8A06lQNlKeyu5YXi39GpDAeKlWOxmdLOrFf0w76aoT8JGDvzyKR1?media-id=44A3ioBmRBAF8A06lQNlKeyu5YXi39GpDAeKlWOxmdLOrFf0w76aoT8JGDvzyKR1&appid=wx678687fa5226e237",
+        "standards": 30,
+        "unit": "次",
+        "type": "discrete",
         "description": ""
     },
     {
         "name": "半年卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/eYB1qSX_bR0gP58Yl7JI1yiSKXycu65NX4Ut96fX5viqhJW5KK9_l-iIlD5viYA6?media-id=eYB1qSX_bR0gP58Yl7JI1yiSKXycu65NX4Ut96fX5viqhJW5KK9_l-iIlD5viYA6&appid=wx678687fa5226e237",
+        "standards": 6,
+        "unit": "月",
+        "type": "continuous",
         "description": ""
     },
     {
         "name": "年卡",
         "cover": "https://wxamusic.wx.qq.com/wxasr/getminipic/uli9GIBBS4fxS6W8x9Wmz1bAnTUz06KVyP6lIjOWswU7FCYuvbeAbEkea0XZhFm-?media-id=uli9GIBBS4fxS6W8x9Wmz1bAnTUz06KVyP6lIjOWswU7FCYuvbeAbEkea0XZhFm-&appid=wx678687fa5226e237",
+        "standards": 1,
+        "unit": "年",
+        "type": "continuous",
         "description": ""
     }
 ]
