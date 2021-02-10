@@ -107,6 +107,9 @@ const Card = props => {
         const options = DeskItems[shop.value].map(item => ({ value: item.name, label: item.name }));
         setDeskOptions(options);
     }
+    const handleCreateOrder = (productInfo) => {
+        console.log( productInfo, '===')
+    }
     return (
       <ResponsiveGridLayout className="layout" layouts={layouts}
         width={document.body.clientWidth}
@@ -117,11 +120,18 @@ const Card = props => {
                 const currentItem = DeskItems[selectedShop.value].find(item => item.name === selectedDesk.value);
                 const priceData = currentItem.prices.find(item => item.type === card.name);
                 const showPrice = !priceData ? '' : priceData.discount_price || priceData.price;
+                const productInfo = {
+                    ...card,
+                    price: showPrice,
+                    shopName: selectedShop.value,
+                    deskType: selectedDesk.value,
+                }
+
                 return <CardItem key={'' + i}>
                     <Select placeholder="选择门店" className="shop_selection" value={selectedShop} onChange={handleSelectShop.bind(this)} options={ShopOptions} />
                     <Select placeholder="选择桌型" className="desk_selection" value={selectedDesk} onChange={setSelectedDesk.bind(this)} options={DeskOptions} />
                     <LazyLoadImage key={i} src={card.cover} height={'60%'} width={'100%'}/>
-                    {showPrice ? <PurchaseBtn>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn>: <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
+                    {showPrice ? <PurchaseBtn onClick={handleCreateOrder.bind(this, productInfo)}>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn>: <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
                 </CardItem>
             }
             return <CardItem key={'' + i}>
