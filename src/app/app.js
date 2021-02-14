@@ -9,7 +9,7 @@ import styled, { ThemeProvider } from "styled-components";
 import * as colors from "./global/colors";
 
 // Action creators and helpers
-import { establishCurrentUser } from "../modules/auth";
+import { establishCurrentUser, logoutUser } from "../modules/auth";
 import { isServer } from "../store";
 
 import Header from "./header";
@@ -52,6 +52,9 @@ class App extends Component {
         <ThemeProvider theme={{ mode }}>
           <IntlProvider locale={lang} messages={messages[lang]}>
             <div id="app">
+              <LoginOut isShow={this.props.isAuthenticated}>
+                <button name='logout' onClick={this.props.logoutUser.bind(this)}>登出</button>
+              </LoginOut>
               <LangSwitchBtn lang={lang}>
                 <button name='zh' type="button" onClick={() => { this.setState({ lang: "en", mode: "dark" }); }} > {" "} 中文{" "} </button>
                 <button name='en' type="button" onClick={() => { this.setState({ lang: "zh", mode: "light" }); }} > {" "} 英文{" "} </button>
@@ -72,7 +75,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ establishCurrentUser }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ establishCurrentUser, logoutUser }, dispatch);
 
 export default withRouter(
   connect(
@@ -80,6 +83,16 @@ export default withRouter(
     mapDispatchToProps
   )(App)
 );
+
+const LoginOut = styled.div`
+  display: ${ props => props.isAuthenticated ? 'block' : 'none' };
+  z-index: 999;
+  position: fixed;
+  right: 0;
+  bottom: 32px;
+  opacity: 0.6;
+  button { outline: none; border: none; width: 60px; height: 32px;}
+`
 
 const LangSwitchBtn = styled.div`
   z-index: 999;

@@ -98,6 +98,7 @@ const Login = props => {
         const { code, msg, data } = res.body;
         if (!code) {
           props.loginUser(data)
+          props.history.push(`${REACT_APP_ROOT}/shoplist/mine`)
           return message.success({ content: '登陆成功'})
         }
         return message.error({ content: '登陆失败:' + msg})

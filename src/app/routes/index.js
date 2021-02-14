@@ -49,7 +49,7 @@ export default () => (
     <Route exact path={REACT_APP_ROOT} component={Login} />
     <Route exact path={`${REACT_APP_ROOT}/policy`} component={Policy} />
     <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/regist`} component={Regist} />
-    <UnauthenticatedRoute exact path={`${REACT_APP_ROOT}/login`} component={Login} />
+    <Route exact path={`${REACT_APP_ROOT}/login`} component={Login} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/logout`} component={Logout} />
     <AuthenticatedRoute exact path={`${REACT_APP_ROOT}/oauth-callback`} component={OAuth} />
     <Route path={`${REACT_APP_ROOT}/shoplist`} component={ShopList} />

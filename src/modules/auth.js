@@ -57,11 +57,12 @@ export const setCurrentUser = user => dispatch =>
     });
 
     Cookies.set('yuntun-website', user, { expires: 7 });
-    
-    dispatch({
-      type: AUTHENTICATE,
-      authenticated: true
-    });
+    if (user.token) {
+      dispatch({
+        type: AUTHENTICATE,
+        authenticated: true
+      });
+    }
 
     resolve(user);
   });
@@ -72,9 +73,14 @@ export const establishCurrentUser = () => dispatch =>
 
     // 如果是微信环境, 初始化config信息 + 微信用户信息 + 系统用户信息
     if (tool.h5Env.isWX()) {
+      // 初始化h5 console工具库
+      // setTimeout(() => {
+      //   tool.h5Env.init()
+      // }, 0);
+
       // 微信环境从缓存获取 openid，避免多次授权
       let openidFromCookie = Cookies.get('openid');
-      if (openidFromCookie ) {
+      if (openidFromCookie) {
         dispatch(setOpenID(openidFromCookie));
         tool.authorizeUtils.wxFetchUserInfoByOpenID(openidFromCookie).then( userinfo => {
           dispatch(setCurrentUser({
@@ -106,13 +112,15 @@ export const establishCurrentUser = () => dispatch =>
           'debug': false,
           'jsApiList': [
             'onMenuShareTimeline', 
-            'onMenuShareAppMessage'
+            'onMenuShareAppMessage',
+            'chooseWXPay',
           ], //optional, pass all the jsapi you want, the default will be ['onMenuShareTimeline', 'onMenuShareAppMessage']
           'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
         })
         wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
           shareOnMoment: w.shareOnMoment.bind(w),
           shareOnChat: w.shareOnChat.bind(w),
+          callWechatApi: w.callWechatApi.bind(w),
           wxThirdPartLogin: tool.authorizeUtils.wxThirdPartLogin,
           wxFetchUserInfo: tool.authorizeUtils.wxFetchUserInfo,
           wxFetchBaseInfo: tool.authorizeUtils.wxFetchBaseInfo,

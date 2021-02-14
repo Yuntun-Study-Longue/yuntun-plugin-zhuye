@@ -107,8 +107,33 @@ const Card = props => {
         const options = DeskItems[shop.value].map(item => ({ value: item.name, label: item.name }));
         setDeskOptions(options);
     }
-    const handleCreateOrder = (productInfo) => {
-        console.log( productInfo, '===')
+    const handlePaySuccess = async (res) => {
+
+    }
+    const handleCreateOrder = async (productInfo) => {
+        const token = await tool.deviceUtils.fetchTokenFromCookie('yuntun-website');
+        const {mode} = tool.domainUtils.getSearchJSON(props.location.search)
+        const isNotSandBox = mode !== 'sandbox'
+        if (!props.openid) {
+            console.log('系统获取openid异常')
+            return ''
+        }
+        tool.deviceUtils.generateShortId().then(order_id => {
+            console.log(order_id, '== order id')
+            sa.post(`/webcore/wx/seats/${tool.domainUtils.getWebAppId()}/create_order/${props.openid}`)
+            .set('Authorization', token)
+            .send({
+                mode: isNotSandBox,
+                order_id,
+                product_name: `${productInfo.deskType}-${productInfo.name}`,
+                shop_name: productInfo.shopName,
+                order_price: window.location.host === 'm.yuntun-bj.com' && isNotSandBox ? productInfo.price : 0.01,
+            }).then(res => {
+                isNotSandBox ? 
+                    props.wx.callWechatApi('chooseWXPay', { ...res.body.data, timestamp: res.body.data.timeStamp, success: handlePaySuccess }) : 
+                    handlePaySuccess(); 
+            }).catch(e => console.log(e.toString()))
+        })
     }
     return (
       <ResponsiveGridLayout className="layout" layouts={layouts}

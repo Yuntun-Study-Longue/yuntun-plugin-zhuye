@@ -14,7 +14,7 @@ const UnauthenticatedRoute = ({ component: Component, ...rest }) => {
         !rest.isAuthenticated ? (
           <Component {...props} />
         ) : (
-          <Redirect to={query.redirect || `${REACT_APP_ROOT}/shoplist/mine`} />
+          <Redirect to={query.redirect} />
         )
       }
     />
