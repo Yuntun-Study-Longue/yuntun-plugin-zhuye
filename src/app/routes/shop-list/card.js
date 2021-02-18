@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { setOpenID } from '../../../modules/auth';
+import { setOpenID, logoutUser } from '../../../modules/auth';
 import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
 import styled from 'styled-components';
 import * as colors from '../../global/colors';
@@ -11,6 +11,7 @@ import Select from 'react-select';
 import * as tool from "luna-utils";
 
 import WechatJSSDK from 'wechat-jssdk';
+import { REACT_APP_ROOT } from '../../constants';
 // https://developers.weixin.qq.com/community/develop/article/doc/000a0cd7e586d028cddadad9459413
 //Use MiniProgram directly
 // const wx = new Wechat({
@@ -48,10 +49,10 @@ const PurchaseBtn = styled.button`
     height: 40px;
     outline: none;
     border: none;
-    color: ${ props => !props.disabled && colors.btnBgColor};
     appearance: none;
-    background-color: ${colors.CardBgColor};
     font-size: 16px;
+    color: ${ props => !props.disabled && colors.btnBgColor};
+    background-color: ${colors.CardBgColor};
     i { color: ${colors.LuoShenRed}; font-size: 28px; font-weight: bold; };
 `
 PurchaseBtn.defaultProps = { variant: 'default' }
@@ -65,6 +66,23 @@ const Card = props => {
     const [DeskOptions, setDeskOptions] = useState([]);
     const [selectedShop, setSelectedShop] = useState(null);
     const [selectedDesk, setSelectedDesk] = useState(null);
+    
+    useEffect(() => {
+        const btn = document.getElementById('subscribe-btn');
+        const handleSubClick = function (e) {
+            alert('ok click')
+        }
+        if (btn) {
+            btn.addEventListener('success', handleSubClick);   
+            btn.addEventListener('error',function (e) {             
+            console.log('fail', e.detail);
+            });
+        }
+        return () => {
+            btn && btn.removeEventListener('success', handleSubClick);
+        }
+    }, [selectedShop && selectedDesk])
+
     useEffect(() => {
         if (!tool.systemUtils.isServer()) {
             props.wx && props.wx.shareOnMoment({
@@ -98,8 +116,8 @@ const Card = props => {
             setShopOptions(options);
             setDeskItems(res.body);
         })
-        return
     }, [props.wx]);
+
     const handleSelectShop = (shop) => {
         const DeskTypes = DeskItems[shop.value].map(item => item.name);
         selectedDesk && shop !== selectedShop && !DeskTypes.includes(selectedDesk.value) && setSelectedDesk(null);
@@ -128,18 +146,32 @@ const Card = props => {
                 product_name: `${productInfo.deskType}-${productInfo.name}`,
                 shop_name: productInfo.shopName,
                 order_price: window.location.host === 'm.yuntun-bj.com' && isNotSandBox ? productInfo.price : 0.01,
-            }).then(res => {
+            })
+            .use(request => {
+                request.ok(res => {
+                    if (res.unauthorized) {
+                        props.logoutUser();
+                        props.history.push(`${REACT_APP_ROOT}/login?redirect=${props.location.pathname}`)
+                        return false
+                    }
+                    return true
+                })
+                return request
+            })
+            .then(res => {
                 isNotSandBox ? 
                     props.wx.callWechatApi('chooseWXPay', { ...res.body.data, timestamp: res.body.data.timeStamp, success: handlePaySuccess }) : 
                     handlePaySuccess(); 
-            }).catch(e => console.log(e.toString()))
+            })
         })
     }
     return (
-      <ResponsiveGridLayout className="layout" layouts={layouts}
+    <div>
+        <ResponsiveGridLayout className="layout" layouts={layouts}
         width={document.body.clientWidth}
         breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
         cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}>
+        
         { cardItems.length ? cardItems.map((card, i) => {
             if ( selectedShop && selectedDesk ) {
                 const currentItem = DeskItems[selectedShop.value].find(item => item.name === selectedDesk.value);
@@ -156,7 +188,46 @@ const Card = props => {
                     <Select placeholder="选择门店" className="shop_selection" value={selectedShop} onChange={handleSelectShop.bind(this)} options={ShopOptions} />
                     <Select placeholder="选择桌型" className="desk_selection" value={selectedDesk} onChange={setSelectedDesk.bind(this)} options={DeskOptions} />
                     <LazyLoadImage key={i} src={card.cover} height={'60%'} width={'100%'}/>
-                    {showPrice ? <PurchaseBtn onClick={handleCreateOrder.bind(this, productInfo)}>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn>: <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
+                    {showPrice ? <PurchaseBtn dangerouslySetInnerHTML={{
+                        __html: `
+                        <wx-open-subscribe template="Ip4TSQ2dgPgzTvq-GMoeuNYPW1O_1BrIHrGL1N1fA0o" id="subscribe-btn">
+                            <template slot="style">
+                                <style>
+                                .subscribe-btn {
+                                    width: 100%;
+                                    height: 40px;
+                                    outline: none;
+                                    border: none;
+                                    appearance: none;
+                                    font-size: 16px;
+                                    color: #000;
+                                    background-color: #fff;
+                                }
+                                .subscribe-btn > i {
+                                    color: #D23918; font-size: 28px; font-weight: bold;
+                                }
+                                </style>
+                            </template>
+                            <template>
+                                <button class="subscribe-btn">
+                                    支付<i>${showPrice}</i>元，购买${card.name}              
+                                </button>
+                            </template>
+                        </wx-open-subscribe>
+                        <script>
+                            var btn = document.getElementById('subscribe-btn');
+                            btn.addEventListener('success', function (e) {            
+                            console.log('success', e.detail);
+                            });   
+                            btn.addEventListener('error',function (e) {             
+                            console.log('fail', e.detail);
+                            });
+                        </script>
+                        `
+                        }}>
+                    </PurchaseBtn> 
+                    : <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
+                    {/* <PurchaseBtn onClick={handleCreateOrder.bind(this, productInfo)}>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn> */}
                 </CardItem>
             }
             return <CardItem key={'' + i}>
@@ -168,6 +239,7 @@ const Card = props => {
         }) :
         Array.from({ length: 6 }).map((item, i) => <CardItem key={'' + i}></CardItem>) }
       </ResponsiveGridLayout>
+    </div>
     )
 }
 
@@ -177,7 +249,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ setOpenID }, dispatch);
+    bindActionCreators({ setOpenID, logoutUser }, dispatch);
   
 
 export default connect(

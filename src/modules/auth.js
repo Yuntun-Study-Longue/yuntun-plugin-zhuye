@@ -115,7 +115,11 @@ export const establishCurrentUser = () => dispatch =>
             'onMenuShareAppMessage',
             'chooseWXPay',
           ], //optional, pass all the jsapi you want, the default will be ['onMenuShareTimeline', 'onMenuShareAppMessage']
-          'customUrl': '' //set custom weixin js script url, usually you don't need to add this js manually
+          'openTagList': [
+            'wx-open-launch-weapp',
+            'wx-open-subscribe'
+          ],
+          'customUrl': 'https://res.wx.qq.com/open/js/jweixin-1.6.0.js' //set custom weixin js script url, usually you don't need to add this js manually
         })
         wx.initialize().then( w => dispatch({ type: SET_WX_INSTANCE, wx: { 
           shareOnMoment: w.shareOnMoment.bind(w),

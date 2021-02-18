@@ -85,7 +85,7 @@ export default withRouter(
 );
 
 const LoginOut = styled.div`
-  display: ${ props => props.isAuthenticated ? 'block' : 'none' };
+  display: ${ props => props.isShow ? 'block' : 'none' };
   z-index: 999;
   position: fixed;
   right: 0;

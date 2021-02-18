@@ -87,7 +87,7 @@ const Login = props => {
         props.wx.wxFetchBaseInfo().then( res => {
           props.setOpenID(res.openid)
         })
-      } 
+      }
     }
   }, [props.wx])
   const { getFieldProps, validateFields } = props.form;
@@ -96,9 +96,10 @@ const Login = props => {
     tool.deviceUtils.generateSid(data.phone).then(sid => {
       sa.get('/webcore/auth/base/yuntun/login', {...data, sid }).then(res => {
         const { code, msg, data } = res.body;
+        const {redirect} = tool.domainUtils.getSearchJSON(props.location.search)
         if (!code) {
           props.loginUser(data)
-          props.history.push(`${REACT_APP_ROOT}/shoplist/mine`)
+          props.history.push(redirect || `${REACT_APP_ROOT}/shoplist/mine`)
           return message.success({ content: '登陆成功'})
         }
         return message.error({ content: '登陆失败:' + msg})

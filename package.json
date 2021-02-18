@@ -17,7 +17,7 @@
     "publish:simple": "npm publish",
     "publish:local": "cross-env PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version npm run build && npm run es5 && npm run assets && npm run oss",
     "preinstall": "npm cache clean --force",
-    "prepublish:local": "npm link luna-utils"
+    "prepublish:local": "npm link luna-utils wechat-jssdk"
   },
   "browserslist": [
     ">0.2%",
