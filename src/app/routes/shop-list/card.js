@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setOpenID, logoutUser } from '../../../modules/auth';
@@ -9,17 +9,10 @@ import sa from "superagent";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Select from 'react-select';
 import * as tool from "luna-utils";
-
-import WechatJSSDK from 'wechat-jssdk';
+import message from "rc-message";
+import "rc-message/assets/index.css"
 import { REACT_APP_ROOT } from '../../constants';
-// https://developers.weixin.qq.com/community/develop/article/doc/000a0cd7e586d028cddadad9459413
-//Use MiniProgram directly
-// const wx = new Wechat({
-//     miniProgram: {
-//       "appId": "wxd1489ee2a3ffa30c",
-//       "appSecret": "f17207d6d52c8b77bc1b0a3e8e64d874",
-//     }
-// })
+
 const getLayoutsFromSomewhere = () => {
     const lgLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i*3%12, y: 0, w: 3, h: 2, static: true}))
     const mdLayout = Array.from({ length: 5 }).map((_, i) => ({i: ''+i, x: i%10, y: 0, w: 1, h: 2, static: true}))
@@ -68,18 +61,27 @@ const Card = props => {
     const [selectedDesk, setSelectedDesk] = useState(null);
     
     useEffect(() => {
-        const btn = document.getElementById('subscribe-btn');
-        const handleSubClick = function (e) {
-            alert('ok click')
-        }
-        if (btn) {
-            btn.addEventListener('success', handleSubClick);   
-            btn.addEventListener('error',function (e) {             
-            console.log('fail', e.detail);
-            });
-        }
-        return () => {
-            btn && btn.removeEventListener('success', handleSubClick);
+        if (cardItems.length && selectedShop && selectedDesk) {
+            cardItems.map((card, i) => {
+                const currentItem = DeskItems[selectedShop.value].find(item => item.name === selectedDesk.value);
+                const priceData = currentItem.prices.find(item => item.type === card.name);
+                const showPrice = !priceData ? '' : priceData.discount_price || priceData.price;
+                const productInfo = {
+                    ...card,
+                    price: showPrice,
+                    shopName: selectedShop.value,
+                    deskType: selectedDesk.value,
+                }
+                const btn = document.getElementById(`subscribe-btn-${card.name}`);
+                if (btn) {
+                    btn.addEventListener('success', function (e) {
+                        handleCreateOrder(productInfo);
+                    });   
+                    btn.addEventListener('error',function (e) {             
+                    console.log('fail', e.detail);
+                    });
+                }
+            })
         }
     }, [selectedShop && selectedDesk])
 
@@ -126,7 +128,7 @@ const Card = props => {
         setDeskOptions(options);
     }
     const handlePaySuccess = async (res) => {
-
+        alert('buy success!')
     }
     const handleCreateOrder = async (productInfo) => {
         const token = await tool.deviceUtils.fetchTokenFromCookie('yuntun-website');
@@ -143,15 +145,22 @@ const Card = props => {
             .send({
                 mode: isNotSandBox,
                 order_id,
-                product_name: `${productInfo.deskType}-${productInfo.name}`,
+                uid: props.currentUser.uid,
+                phone: props.currentUser.phone,
                 shop_name: productInfo.shopName,
+                desk_type: productInfo.deskType,
+                card_name: productInfo.name,
                 order_price: window.location.host === 'm.yuntun-bj.com' && isNotSandBox ? productInfo.price : 0.01,
             })
             .use(request => {
                 request.ok(res => {
                     if (res.unauthorized) {
-                        props.logoutUser();
-                        props.history.push(`${REACT_APP_ROOT}/login?redirect=${props.location.pathname}`)
+                        const duration = 5;
+                        message.error({ duration, content: '用户凭证已过期，购买失败。5s后跳转登录页面...'})
+                        setTimeout(() => {
+                            props.logoutUser();
+                            props.history.push(`${REACT_APP_ROOT}/login?redirect=${props.location.pathname}`)
+                        }, duration * 1000)
                         return false
                     }
                     return true
@@ -177,23 +186,17 @@ const Card = props => {
                 const currentItem = DeskItems[selectedShop.value].find(item => item.name === selectedDesk.value);
                 const priceData = currentItem.prices.find(item => item.type === card.name);
                 const showPrice = !priceData ? '' : priceData.discount_price || priceData.price;
-                const productInfo = {
-                    ...card,
-                    price: showPrice,
-                    shopName: selectedShop.value,
-                    deskType: selectedDesk.value,
-                }
-
                 return <CardItem key={'' + i}>
                     <Select placeholder="选择门店" className="shop_selection" value={selectedShop} onChange={handleSelectShop.bind(this)} options={ShopOptions} />
                     <Select placeholder="选择桌型" className="desk_selection" value={selectedDesk} onChange={setSelectedDesk.bind(this)} options={DeskOptions} />
                     <LazyLoadImage key={i} src={card.cover} height={'60%'} width={'100%'}/>
                     {showPrice ? <PurchaseBtn dangerouslySetInnerHTML={{
                         __html: `
-                        <wx-open-subscribe template="Ip4TSQ2dgPgzTvq-GMoeuNYPW1O_1BrIHrGL1N1fA0o" id="subscribe-btn">
+                        <wx-open-subscribe template="Ip4TSQ2dgPgzTvq-GMoeuNYPW1O_1BrIHrGL1N1fA0o" id="subscribe-btn-${card.name}">
                             <template slot="style">
                                 <style>
                                 .subscribe-btn {
+                                    display: block;
                                     width: 100%;
                                     height: 40px;
                                     outline: none;
@@ -214,20 +217,10 @@ const Card = props => {
                                 </button>
                             </template>
                         </wx-open-subscribe>
-                        <script>
-                            var btn = document.getElementById('subscribe-btn');
-                            btn.addEventListener('success', function (e) {            
-                            console.log('success', e.detail);
-                            });   
-                            btn.addEventListener('error',function (e) {             
-                            console.log('fail', e.detail);
-                            });
-                        </script>
                         `
                         }}>
                     </PurchaseBtn> 
                     : <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
-                    {/* <PurchaseBtn onClick={handleCreateOrder.bind(this, productInfo)}>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn> */}
                 </CardItem>
             }
             return <CardItem key={'' + i}>
@@ -246,6 +239,7 @@ const Card = props => {
 const mapStateToProps = state => ({
     wx: state.auth.wx,
     openid: state.auth.openid,
+    currentUser: state.auth.currentUser
 });
 
 const mapDispatchToProps = dispatch =>

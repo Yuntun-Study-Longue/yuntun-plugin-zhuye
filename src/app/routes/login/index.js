@@ -94,7 +94,12 @@ const Login = props => {
   const submit = () => validateFields((error, data) => {
     if (error) return
     tool.deviceUtils.generateSid(data.phone).then(sid => {
-      sa.get('/webcore/auth/base/yuntun/login', {...data, sid }).then(res => {
+      let submitData = {...data, sid };
+      if (props.openid) {
+        submitData = { ...submitData, h5_openid: props.openid }
+      }
+      
+      sa.get('/webcore/auth/base/yuntun/login', submitData).then(res => {
         const { code, msg, data } = res.body;
         const {redirect} = tool.domainUtils.getSearchJSON(props.location.search)
         if (!code) {
