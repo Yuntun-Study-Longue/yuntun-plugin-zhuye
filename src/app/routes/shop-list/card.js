@@ -75,8 +75,11 @@ const Card = props => {
                 const btn = document.getElementById(`subscribe-btn-${card.name}`);
                 if (btn) {
                     btn.addEventListener('success', function (e) {
-                        handleCreateOrder(productInfo);
-                    });   
+                        console.log(e.detail.errMsg, e.detail.subscribeDetails);
+                        if (e.detail.errMsg === 'subscribe:ok') {
+                            /accept/.test(e.detail.subscribeDetails) && handleCreateOrder(productInfo)
+                        }
+                    });
                     btn.addEventListener('error',function (e) {             
                     console.log('fail', e.detail);
                     });

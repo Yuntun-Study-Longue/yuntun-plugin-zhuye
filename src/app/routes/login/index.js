@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { FormattedMessage, intl } from "react-intl";
 import { bindActionCreators } from 'redux';
 import styled from "styled-components";
 import { createForm } from 'rc-form';
@@ -10,7 +11,6 @@ import sa from 'superagent';
 import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
-import Cookies from 'js-cookie';
 import "rc-message/assets/index.css"
 
 const LoginGateWrap = styled.div`
@@ -98,24 +98,24 @@ const Login = props => {
       if (props.openid) {
         submitData = { ...submitData, h5_openid: props.openid }
       }
-      
+
       sa.get('/webcore/auth/base/yuntun/login', submitData).then(res => {
         const { code, msg, data } = res.body;
         const {redirect} = tool.domainUtils.getSearchJSON(props.location.search)
         if (!code) {
           props.loginUser(data)
           props.history.push(redirect || `${REACT_APP_ROOT}/shoplist/mine`)
-          return message.success({ content: '登陆成功'})
+          return message.success({ content: <FormattedMessage defaultMessage='登录成功' />})
         }
-        return message.error({ content: '登陆失败:' + msg})
+        return message.error({ content: <FormattedMessage defaultMessage='登录失败 {msg}' values={{ msg }} />})
       })
     })
   });
-  return <Page title="登录页面">
+  return <Page title={<FormattedMessage id='app.login.welcome' defaultMessage='登录页面' />}>
     <XinJieWrap>
       <LoginGateWrap>
         <LoginGate>
-          <WelcomeBanner>登录页面</WelcomeBanner>
+          <WelcomeBanner><FormattedMessage id='app.login.welcome' defaultMessage='登录页面' /></WelcomeBanner>
           <form>
             <label htmlFor="phone">请输入手机号</label>
             <input id='phone' type='text' placeholder="手机号" autoComplete="off"

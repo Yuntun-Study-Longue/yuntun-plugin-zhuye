@@ -12,7 +12,6 @@ import * as colors from "./global/colors";
 import { establishCurrentUser, logoutUser } from "../modules/auth";
 import { isServer } from "../store";
 
-import Header from "./header";
 import Routes from "./routes";
 
 import { GlobalStyle } from "./global/style";
@@ -34,6 +33,15 @@ class App extends Component {
     }
   }
 
+  // loadLocaleData(locale) {
+  //   switch (locale) {
+  //     case 'fr':
+  //       return import('compiled-lang/fr.json')
+  //     default:
+  //       return import('compiled-lang/en.json')
+  //   }
+  // }
+
   shouldComponentUpdate(nextProps, nextState) {
     if (nextState.lang !== this.state.lang) {
       console.log("fetch message from remote");
@@ -46,6 +54,8 @@ class App extends Component {
 
   render() {
     const { lang, mode } = this.state;
+    // const messages = await loadLocaleData(lang)
+
     return (
       <Fragment>
         <GlobalStyle />

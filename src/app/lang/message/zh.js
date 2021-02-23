@@ -1,4 +1,5 @@
 export default {
+  // example
   "app.home.subtitle": "这是副标题",
   "app.header.homepage": "主页",
   "app.header.about": "关于",
