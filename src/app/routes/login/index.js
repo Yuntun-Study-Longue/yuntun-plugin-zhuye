@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage, intl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { bindActionCreators } from 'redux';
 import styled from "styled-components";
 import { createForm } from 'rc-form';
@@ -105,17 +105,17 @@ const Login = props => {
         if (!code) {
           props.loginUser(data)
           props.history.push(redirect || `${REACT_APP_ROOT}/shoplist/mine`)
-          return message.success({ content: <FormattedMessage defaultMessage='登录成功' />})
+          return message.success({ content: '登陆成功'})
         }
-        return message.error({ content: <FormattedMessage defaultMessage='登录失败 {msg}' values={{ msg }} />})
+        return message.error({ content: '登陆失败:' + msg})
       })
     })
   });
-  return <Page title={<FormattedMessage id='app.login.welcome' defaultMessage='登录页面' />}>
+  return <Page title="登录页面">
     <XinJieWrap>
       <LoginGateWrap>
         <LoginGate>
-          <WelcomeBanner><FormattedMessage id='app.login.welcome' defaultMessage='登录页面' /></WelcomeBanner>
+          <WelcomeBanner>登录页面</WelcomeBanner>
           <form>
             <label htmlFor="phone">请输入手机号</label>
             <input id='phone' type='text' placeholder="手机号" autoComplete="off"

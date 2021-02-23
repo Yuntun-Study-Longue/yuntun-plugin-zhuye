@@ -8,5 +8,10 @@ export default {
   "app.header.login": "登录",
   "app.header.logout": "注销",
   "app.header.dashboard": "个人中心",
-  "app.header.this-is-broken": "NotFound"
+  "app.header.this-is-broken": "NotFound",
+
+  // login
+  "app.login.welcome": "登录页面"
+  // shop-list
+
 };
