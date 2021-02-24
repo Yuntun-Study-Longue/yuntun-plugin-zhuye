@@ -6,7 +6,7 @@ import sa from "superagent";
 import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 
-const data = Array.from({ length: 3 }).map((_, i) => ({i: ''+i}))
+const data = Array.from({ length: 4 }).map((_, i) => ({i: ''+i}))
 const getLayoutsFromSomewhere = () => {
     const lgLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i*4, y: 0, w: 4, h: 3.1, static: true}))
     const xsLayout = Array.from({ length: 6 }).map((_, i) => ({i: ''+i, x: i, y: 0, w: 3, h: 3, static: true}))

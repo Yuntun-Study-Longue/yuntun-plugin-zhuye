@@ -189,11 +189,18 @@ const Card = props => {
                 const currentItem = DeskItems[selectedShop.value].find(item => item.name === selectedDesk.value);
                 const priceData = currentItem.prices.find(item => item.type === card.name);
                 const showPrice = !priceData ? '' : priceData.discount_price || priceData.price;
+                const productInfo = {
+                    ...card,
+                    price: showPrice,
+                    shopName: selectedShop.value,
+                    deskType: selectedDesk.value,
+                }
                 return <CardItem key={'' + i}>
-                    <Select placeholder="选择门店" className="shop_selection" value={selectedShop} onChange={handleSelectShop.bind(this)} options={ShopOptions} />
-                    <Select placeholder="选择桌型" className="desk_selection" value={selectedDesk} onChange={setSelectedDesk.bind(this)} options={DeskOptions} />
+                    <Select readonly="readonly" onFocus={e => e.preventDefault()} isSearchable={false} placeholder="选择门店" className="shop_selection" readonly="readonly" value={selectedShop} onChange={handleSelectShop.bind(this)} options={ShopOptions} />
+                    <Select readonly="readonly" onFocus={e => e.preventDefault()} isSearchable={false} placeholder="选择桌型" className="desk_selection" readonly="readonly" value={selectedDesk} onChange={setSelectedDesk.bind(this)} options={DeskOptions} />
                     <LazyLoadImage key={i} src={card.cover} height={'60%'} width={'100%'}/>
-                    {showPrice ? <PurchaseBtn dangerouslySetInnerHTML={{
+                    {showPrice ? 
+                    tool.h5Env.isWX()? <PurchaseBtn dangerouslySetInnerHTML={{
                         __html: `
                         <wx-open-subscribe template="Ip4TSQ2dgPgzTvq-GMoeuNYPW1O_1BrIHrGL1N1fA0o" id="subscribe-btn-${card.name}">
                             <template slot="style">
@@ -222,7 +229,7 @@ const Card = props => {
                         </wx-open-subscribe>
                         `
                         }}>
-                    </PurchaseBtn> 
+                    </PurchaseBtn> : <PurchaseBtn>支付<i>{showPrice}</i>元，购买{card.name}</PurchaseBtn>
                     : <PurchaseBtn disabled>该卡已售罄</PurchaseBtn>}
                 </CardItem>
             }
