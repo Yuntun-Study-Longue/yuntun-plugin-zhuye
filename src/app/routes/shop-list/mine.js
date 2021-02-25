@@ -49,7 +49,6 @@ InfoItem.defaultProps = { variant: 'default' }
 
 const Mine = ({ history, currentUser, wx, isAuthenticated }) => {
     const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
-
     useEffect(() => {
         if (!isAuthenticated) setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 0);
         else if (!tool.systemUtils.isServer()) {
@@ -69,7 +68,7 @@ const Mine = ({ history, currentUser, wx, isAuthenticated }) => {
                 cancel: function (){}
             });
         }
-    }, [wx])
+    }, [wx&&isAuthenticated])
 
 return <GridLayout className="layout" layout={layout} cols={4} rowHeight={60} width={document.body.clientWidth}>
         <InfoItem key='card' className="card">
