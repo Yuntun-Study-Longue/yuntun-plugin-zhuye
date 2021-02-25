@@ -55,7 +55,11 @@ async function handlSSR(request, h) {
     // If the user has a cookie (i.e. they're signed in) - set them as the current user
     // Otherwise, we want to set the current state to be logged out, just in case this isn't the default
     if ("yuntun-website" in request.state) {
-      store.dispatch(setCurrentUser(request.state["yuntun-website"]));
+      let user = {}
+      if (request.state["yuntun-website"]) {
+        user = JSON.parse(request.state["yuntun-website"].replace(/(%[\dA-F]{2})+/gi, decodeURIComponent))
+      }
+      store.dispatch(setCurrentUser(user));
     } else {
       store.dispatch(logoutUser());
     }
