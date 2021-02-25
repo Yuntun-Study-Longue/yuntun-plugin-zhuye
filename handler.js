@@ -10,6 +10,7 @@ import Helmet from "react-helmet";
 import { Provider } from "react-redux";
 import { StaticRouter } from "react-router";
 import { Frontload, frontloadServerRender } from "react-frontload";
+import { ServerStyleSheet } from "styled-components";
 import Loadable from "react-loadable";
 import { IntlProvider, addLocaleData } from "react-intl";
 
@@ -29,10 +30,10 @@ async function handlSSR(request, h) {
         - Preloaded state (for Redux) depending on the current route
         - Code-split script tags depending on the current route
     */
-  const injectHTML = (data, { html, title, meta, body, scripts, state }) => {
+  const injectHTML = (data, { html, title, meta, body, scripts, styles, state }) => {
     data = data.replace("<html>", `<html ${html}>`);
     data = data.replace(/<title>.*?<\/title>/g, title);
-    data = data.replace("</head>", `${meta}</head>`);
+    data = data.replace("</head>", `${meta}${styles}</head>`);
     data = data.replace(
       '<div id="root"></div>',
       `<div id="root">${body}</div><script>window.__PRELOADED_STATE__ = ${state}</script>`
@@ -59,6 +60,7 @@ async function handlSSR(request, h) {
       store.dispatch(logoutUser());
     }
 
+    const sheet = new ServerStyleSheet();
     const context = {};
     const modules = [];
 
@@ -78,17 +80,19 @@ async function handlSSR(request, h) {
         */
     const routeMarkup = await frontloadServerRender(() =>
       renderToString(
-        <Loadable.Capture report={m => modules.push(m)}>
-          <Provider store={store}>
-            <IntlProvider locale="zh" defaultLocale="zh">
-              <StaticRouter location={request.url} context={context}>
-                <Frontload isServer={true}>
-                  <App />
-                </Frontload>
-              </StaticRouter>
-            </IntlProvider>
-          </Provider>
-        </Loadable.Capture>
+        sheet.collectStyles(
+          <Loadable.Capture report={m => modules.push(m)}>
+            <Provider store={store}>
+              <IntlProvider locale="zh" defaultLocale="zh">
+                <StaticRouter location={request.url} context={context}>
+                  <Frontload isServer={true}>
+                    <App />
+                  </Frontload>
+                </StaticRouter>
+              </IntlProvider>
+            </Provider>
+          </Loadable.Capture>
+        )
       )
     );
     if (context.url) {
@@ -128,6 +132,7 @@ async function handlSSR(request, h) {
         meta: helmet.meta.toString(),
         body: routeMarkup,
         scripts: extraChunks,
+        styles: sheet.getStyleTags(),
         state: JSON.stringify(store.getState()).replace(/</g, "\\u003c")
       });
 
