@@ -1,25 +1,17 @@
-NOTE: add env file
+# yuntun-plugin-zhuye
+[![npm](https://img.shields.io/npm/v/yuntun-plugin-zhuye.svg?style=flat-square)](https://www.npmjs.com/package/yuntun-plugin-zhuye)
+[![node](https://img.shields.io/node/v/yuntun-plugin-zhuye.svg?style=flat-square)](https://nodejs.org/)
+[![Building Status](https://img.shields.io/travis/Yuntun-Study-Longue/yuntun-plugin-zhuye.svg?style=flat-square)](https://travis-ci.org/Yuntun-Study-Longue/yuntun-plugin-zhuye)
+[![npm](https://img.shields.io/npm/l/yuntun-plugin-zhuye.svg?style=flat-square)](https://www.npmjs.com/package/yuntun-plugin-zhuye)
+[![Coverage Status](https://img.shields.io/coveralls/github/Yuntun-Study-Longue/yuntun-plugin-zhuye.svg?style=flat-square)](https://coveralls.io/github/Yuntun-Study-Longue/yuntun-plugin-zhuye)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-`PUBLIC_URL=$npm_package_homepage/$npm_package_name/$npm_package_version`
+关注云吞自习室公众号，加入云吞开源团队。
+![wxgzh](https://user-images.githubusercontent.com/73932872/110196080-14359600-7e7d-11eb-9a9e-4f76745a9904.jpg)
 
-/_ when PUBLIC_URL exist, npm build inject oss url to assets _/
+#### yuntun-plugin-zhuye
+云吞主程序的主页插件，基于cra开发，可以独立运行。[项目展示](https://m.yuntun-bj.com/zhuye/shoplist/shop)
 
-REACT_APP_ROOT configuration file is /src/app/constants.js, deafult: /v2
 
+关于云吞：基于线下场景，结合IOT + 互联网打造舒适的学习环境。
 
-#### 说明
-专注文字和svg图形展示，代码中不用图片、音频、视频资源。
-
-```javascript
-//图标用阿里iconfont, 快速将图标加入购物车
-1.控制台粘贴回车
-var j=document.createElement('script');
-    j.setAttribute("src", 'https://ajax.microsoft.com/ajax/jquery/jquery-1.4.min.js');
-    document.getElementsByTagName("head")[0].appendChild(j);
-
-2.控制台粘贴回车
-    $("span[title='添加入库']").each(function(){
-        $(this).delay(500).click();
-        console.log($(this).parent().prev().children().eq(0).html());
-    });
-```
