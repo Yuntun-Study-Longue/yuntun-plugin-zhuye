@@ -70,6 +70,7 @@ export const setCurrentUser = user => dispatch =>
 export const establishCurrentUser = () => dispatch =>
   new Promise(resolve => {
     let userFromCookie = Cookies.getJSON('yuntun-website');
+    // 
 
     // 如果是微信环境, 初始化config信息 + 微信用户信息 + 系统用户信息
     if (tool.h5Env.isWX()) {
@@ -92,6 +93,11 @@ export const establishCurrentUser = () => dispatch =>
           dispatch({
             type: WXSUBSCRIBE,
             isWxSubscribed: userinfo.subscribe === 1
+          });
+
+          dispatch({
+            type: AUTHENTICATE,
+            authenticated: true
           });
         })
       }

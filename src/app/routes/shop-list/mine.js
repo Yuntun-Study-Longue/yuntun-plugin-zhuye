@@ -50,8 +50,8 @@ InfoItem.defaultProps = { variant: 'default' }
 const Mine = ({ history, currentUser, wx, isAuthenticated }) => {
     const document = !tool.systemUtils.isServer() ? window.document : { body: { clientWidth: 385 }};
     useEffect(() => {
-        if (!isAuthenticated) setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 0);
-        else if (!tool.systemUtils.isServer()) {
+        if (!tool.systemUtils.isServer()) {
+            // wx && !isAuthenticated && setTimeout(() => history.replace(`${REACT_APP_ROOT}/login`), 0)
             wx && wx.shareOnMoment({
                 type: 'link',
                 title: '欢迎加入云吞自习室',
