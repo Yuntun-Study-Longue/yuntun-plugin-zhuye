@@ -112,9 +112,8 @@ const Shop = () => {
             <div className='i-container'>
                 <p className="ci">云吞（北京）教育科技有限公司</p>
                 <p className="ca">北京市海淀区文慧园路6号1号楼3层A341室</p>
-                <p className="cp">联系我们：400-0670-996 、 400-0670-997</p>
+                <p className="cp">联系我们：400-0670-996</p>
                 <p className="cb">©2021 YUNTUN <a href="https://beian.miit.gov.cn" target="_blank"><span className="lh">京ICP备19017278号-1</span></a></p> 
-                
             </div>
         </ShopItem> : <ShopItem key={data.length}></ShopItem>}
     </GridLayout>
