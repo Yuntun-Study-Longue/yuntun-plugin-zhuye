@@ -6,7 +6,7 @@ import styled from "styled-components";
 import * as colors from "../../global/colors";
 import Page from '../../components/page';
 import { REACT_APP_ROOT } from "../../constants";
-import sa from 'superagent';
+import sa from 'axios';
 import Shop from './shop';
 import Card from './card';
 import Desk from './desk';

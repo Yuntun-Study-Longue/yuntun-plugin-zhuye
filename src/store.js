@@ -17,7 +17,7 @@ export default (url = '/') => {
     ? createMemoryHistory({
         initialEntries: [url]
       })
-    : createBrowserHistory();
+    : createBrowserHistory({ basename: window.__POWERED_BY_QIANKUN__ ? '/' : '/' });
 
   const enhancers = [];
 

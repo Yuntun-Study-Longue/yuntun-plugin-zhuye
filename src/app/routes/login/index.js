@@ -7,7 +7,7 @@ import { createForm } from 'rc-form';
 import Page from '../../components/page';
 import { loginUser, setOpenID } from '../../../modules/auth';
 import { REACT_APP_ROOT } from "../../constants";
-import sa from 'superagent';
+import sa from 'axios';
 import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
@@ -99,8 +99,8 @@ const Login = props => {
         submitData = { ...submitData, h5_openid: props.openid }
       }
 
-      sa.get('/webcore/auth/base/yuntun/login', submitData).then(res => {
-        const { code, msg, data } = res.body;
+      sa.get('/webcore/auth/base/yuntun/login', { params: submitData }).then(res => {
+        const { code, msg, data } = res.data;
         const {redirect} = tool.domainUtils.getSearchJSON(props.location.search)
         if (!code) {
           props.loginUser(data)

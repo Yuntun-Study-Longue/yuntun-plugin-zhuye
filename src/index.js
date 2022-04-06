@@ -1,5 +1,7 @@
+import './public-path';
+import './app/utils/interceptors';
 import React from "react";
-import { render, hydrate } from "react-dom";
+import ReactDOM, { hydrate } from "react-dom";
 import { Provider } from "react-redux";
 import Loadable from "react-loadable";
 import { Frontload } from "react-frontload";
@@ -26,13 +28,36 @@ const Application = (
 
 const root = document.querySelector("#root");
 
-if (root.hasChildNodes() === true) {
-  // If it's an SSR, we use hydrate to get fast page loads by just
-  // attaching event listeners after the initial render
-  Loadable.preloadReady().then(() => {
-    hydrate(Application, root);
-  });
-} else {
-  // If we're not running on the server, just render like normal
-  render(Application, root);
+function render(props) {
+  const { container } = props;
+  ReactDOM.render(Application, container ? container.querySelector('#root') : root);
+}
+
+if (!window.__POWERED_BY_QIANKUN__) {
+  render({});
+}
+
+// if (root.hasChildNodes() === true) {
+//   // If it's an SSR, we use hydrate to get fast page loads by just
+//   // attaching event listeners after the initial render
+//   // Loadable.preloadReady().then(() => {
+//     render(Application, root);
+//   // });
+// } else {
+//   // If we're not running on the server, just render like normal
+//   render(Application, root);
+// }
+
+export async function bootstrap() {
+  console.log('[react16] react app bootstraped');
+}
+
+export async function mount(props) {
+  console.log('[react16] props from main framework', props);
+  render(props);
+}
+
+export async function unmount(props) {
+  const { container } = props;
+  ReactDOM.unmountComponentAtNode(container ? container.querySelector('#root') : root);
 }

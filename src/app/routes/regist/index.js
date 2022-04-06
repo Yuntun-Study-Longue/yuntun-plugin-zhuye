@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { createForm } from 'rc-form';
 import Page from '../../components/page';
 import { REACT_APP_ROOT } from "../../constants";
-import sa from 'superagent';
+import sa from 'axios';
 import * as colors from '../../global/colors';
 import * as tool from "luna-utils";
 import message from "rc-message";
@@ -130,7 +130,7 @@ const Regist = props => {
     if (!phone) return message.warning({ content: '手机号未填写' })
 
     tool.deviceUtils.generateSid(phone).then(sid => {
-      sa.get('/webcore/auth/base/yuntun/bind_phone', { phone, sid, type: 'regist'}).then(res => {
+      sa.get('/webcore/auth/base/yuntun/bind_phone', { params: { phone, sid, type: 'regist'}}).then(res => {
         message.success({ content: '验证码已发送' })
         setCount(60)
       })
@@ -144,7 +144,7 @@ const Regist = props => {
       if (error) return
       tool.deviceUtils.generateSid(data.phone).then(sid => {
         sa.post('/webcore/auth/base/yuntun/regist', {...data, sid }).then(res => {
-          const { code, msg, data } = res.body;
+          const { code, msg, data } = res.data;
           if (!code) {
             props.history.push(`${REACT_APP_ROOT}/login`);
             return message.success({ content: '注册成功' })
